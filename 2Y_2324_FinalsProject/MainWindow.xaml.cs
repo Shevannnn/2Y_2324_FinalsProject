@@ -24,5 +24,11 @@ namespace _2Y_2324_FinalsProject
         {
             InitializeComponent();
         }
+
+        private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            //txtName.Style = (Style)FindResource("TxtBoxStyle");
+            txtName.Style = null;
+        }
     }
 }
