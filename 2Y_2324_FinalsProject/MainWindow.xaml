@@ -66,7 +66,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <StackPanel x:Name="pnlLogin" Margin="20" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Collapsed">
             <Image Source="/Images/logo.jpg" Margin="0 0 0 0" Width="200" Height="220"/>
@@ -77,7 +77,7 @@
             <Button x:Name="btnLogin" Content="Login" Margin="0 20 0 0" Style="{StaticResource BtnStyle}"/>
         </StackPanel>
 
-        <StackPanel x:Name="pnlInventory" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
+        <StackPanel x:Name="pnlMainMenu" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
             <StackPanel  Orientation="Horizontal">
                 <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20"/>
                 <TextBlock Margin="100 0 0 0" Width="110" Height="30" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
@@ -104,12 +104,12 @@
             <TextBlock Text="Header Text" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="20" Background="Transparent"/>
         </StackPanel>
         
-        <StackPanel x:Name="pnlPatientInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
+        <StackPanel x:Name="pnlPatientInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
 
             <StackPanel Margin= "50 20 0 0" Orientation="Vertical" >
                 <Image x:Name="imgPatient" Source="/Images/BlankImage.png" Margin="100 0 0 0" Width="200" Height="200"/>
-                <Button Visibility="Visible" x:Name="btnTakeImg" Margin="100 0 0 0" Content="Take Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" />
-                <Button Visibility="Visible" x:Name="btnUploadPic" Margin="100 10 0 0" Content="Upload Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" />
+                <Button Visibility="Visible" x:Name="btnTakeImg" Margin="100 0 0 0" Content="Take Image" Click="btnTakeImg_Click" Style="{StaticResource BtnStyle}" />
+                <Button Visibility="Visible" x:Name="btnUploadPic" Margin="100 10 0 0" Content="Upload Image" Click="btnUploadPic_Click" Style="{StaticResource BtnStyle}" />
             </StackPanel>
             
             <StackPanel Margin= "50 20 0 0"  Orientation="Vertical" >
@@ -149,7 +149,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
+        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
             <StackPanel Margin= "50 20 0 0"  Orientation="Vertical" >
                 <TextBlock Text="Name" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
                 <TextBox x:Name="txtName2" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
