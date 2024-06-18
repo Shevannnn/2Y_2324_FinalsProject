@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PRMS" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=EVANLAPTOP\SQLEXPRESS;Initial Catalog=PRMS;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="_2Y_2324_FinalsProject.Properties.Settings" SettingsPropertyName="PRMSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BloodType" Member="BloodTypes">
+    <Type Name="BloodType">
+      <Column Name="BloodType_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BloodType_Desc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="BloodType_Patient" Member="Patients" ThisKey="BloodType_ID" OtherKey="BloodType_ID" Type="Patient" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Checkup" Member="Checkups">
+    <Type Name="Checkup">
+      <Column Name="Checkup_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Patient_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Checkup_Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_Temp" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_BP" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Staff_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Patient_Checkup" Member="Patient" ThisKey="Patient_ID" OtherKey="Patient_ID" Type="Patient" IsForeignKey="true" />
+      <Association Name="Staff_Checkup" Member="Staff" ThisKey="Staff_ID" OtherKey="Staff_ID" Type="Staff" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DiagnosisStatus" Member="DiagnosisStatus">
+    <Type Name="DiagnosisStatus">
+      <Column Name="DiagnosisStatus_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiagnosisStatus_Desc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="DiagnosisStatus_Patient" Member="Patients" ThisKey="DiagnosisStatus_ID" OtherKey="DiagnosisStatus_ID" Type="Patient" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HealthInfo" Member="HealthInfos">
+    <Type Name="HealthInfo">
+      <Column Name="HealthInfo_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Patient_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HealthInfo_Medications" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HealthInfo_Allergies" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HealthInfo_Surgeries" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="HealthInfo_FamilyHistory" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Patient_HealthInfo" Member="Patient" ThisKey="Patient_ID" OtherKey="Patient_ID" Type="Patient" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Patient" Member="Patients">
+    <Type Name="Patient">
+      <Column Name="Patient_Image" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Patient_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Patient_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_Sex" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_Age" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_Birth" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="BloodType_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_EmergencyContactName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Patient_EmergencyContactNum" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DiagnosisStatus_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Patient_Checkup" Member="Checkups" ThisKey="Patient_ID" OtherKey="Patient_ID" Type="Checkup" />
+      <Association Name="Patient_HealthInfo" Member="HealthInfos" ThisKey="Patient_ID" OtherKey="Patient_ID" Type="HealthInfo" />
+      <Association Name="BloodType_Patient" Member="BloodType" ThisKey="BloodType_ID" OtherKey="BloodType_ID" Type="BloodType" IsForeignKey="true" />
+      <Association Name="DiagnosisStatus_Patient" Member="DiagnosisStatus" ThisKey="DiagnosisStatus_ID" OtherKey="DiagnosisStatus_ID" Type="DiagnosisStatus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Staff" Member="Staffs">
+    <Type Name="Staff">
+      <Column Name="Staff_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Staff_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Staff_Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StaffRole_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StaffStatus_ID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Staff_Checkup" Member="Checkups" ThisKey="Staff_ID" OtherKey="Staff_ID" Type="Checkup" />
+      <Association Name="StaffRole_Staff" Member="StaffRole" ThisKey="StaffRole_ID" OtherKey="StaffRole_ID" Type="StaffRole" IsForeignKey="true" />
+      <Association Name="StaffStatus_Staff" Member="StaffStatus" ThisKey="StaffStatus_ID" OtherKey="StaffStatus_ID" Type="StaffStatus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffRole" Member="StaffRoles">
+    <Type Name="StaffRole">
+      <Column Name="StaffRole_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="StaffRole_Desc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="StaffRole_Staff" Member="Staffs" ThisKey="StaffRole_ID" OtherKey="StaffRole_ID" Type="Staff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffStatus" Member="StaffStatus">
+    <Type Name="StaffStatus">
+      <Column Name="StaffStatus_ID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="StaffStatus_Desc" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="StaffStatus_Staff" Member="Staffs" ThisKey="StaffStatus_ID" OtherKey="StaffStatus_ID" Type="Staff" />
+    </Type>
+  </Table>
+</Database>

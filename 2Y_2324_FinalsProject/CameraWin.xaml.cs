@@ -121,7 +121,7 @@ namespace _2Y_2324_FinalsProject
             //    vcd = null;
             //    //vcd.Stop();
             //}
-            ImageToFile($"{fp1}Test.png");
+            ImageToFile("test.png");
             this.Close();
         }
 

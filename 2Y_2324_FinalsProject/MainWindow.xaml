@@ -12,6 +12,7 @@
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="Background" Value="Transparent"/>
         </Style>
@@ -37,6 +38,7 @@
         </Style>
 
         <Style x:Key="TxtBoxStyle2" TargetType="TextBox">
+            <Setter Property="IsHitTestVisible" Value="False"/>
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -65,28 +67,90 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="pbStyle" TargetType="PasswordBox">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="cmbStyle" TargetType="ComboBox">
+            <Setter Property="IsHitTestVisible" Value="False"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                            <TextBlock Text="{TemplateBinding Text}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                               Padding="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
 
-    <Grid>
-        <StackPanel x:Name="pnlLogin" Margin="20" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Collapsed">
-            <Image Source="/Images/logo.jpg" Margin="0 0 0 0" Width="200" Height="220"/>
-            <TextBlock Text="Username" FontSize="15" Margin="0 -15 115 -5" Width="77" HorizontalAlignment="Center" FontFamily="verdana" />
+    <Grid Background="AliceBlue" >
+        <StackPanel x:Name="pnlLogin" Margin="0" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Collapsed">
+            <Image Source="/Images/logo.jpg" Margin="0 50 0 0" Width="200" Height="220"/>
+            <TextBlock Text=" Username :" FontSize="15" Margin="10 -10 115 -5" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold" />
             <TextBox x:Name="txtUser" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="verdana" FontSize="13" Margin="0 5 0 0" Style="{StaticResource TxtBoxStyle}"/>
-            <TextBlock Text="Password" FontSize="15" Margin="0 5 115 -10" Width="77" HorizontalAlignment="Center" FontFamily="verdana" />
+            <TextBlock Text=" Password :" FontSize="15" Margin="10 5 115 -10" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold"/>
             <TextBox x:Name="txtPass" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="verdana" FontSize="13"  Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}"/>
-            <Button x:Name="btnLogin" Content="Login" Margin="0 20 0 0" Style="{StaticResource BtnStyle}"/>
+            <PasswordBox x:Name="pbPass" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="verdana" FontSize="20"  Margin="0 -30 0 0" PasswordChar="*" Style="{StaticResource pbStyle}"/>
+
+            <Button x:Name="btnToggle" Margin="165 -30 0 0" Width="47" Height="25" Click="btnToggle_Click" >
+                <Button.Background>
+                    <ImageBrush ImageSource="/Images/unshow.png" Stretch="UniformToFill"/>
+                </Button.Background>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{x:Null}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnLogin" Content="LogIn" Margin="0 20 0 0" BorderThickness="2" BorderBrush="Black" Style="{StaticResource BtnStyle}" Click="btnLogin_Click"/>
         </StackPanel>
 
         <StackPanel x:Name="pnlMainMenu" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
-            <StackPanel  Orientation="Horizontal">
-                <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20"/>
-                <TextBlock Margin="100 0 0 0" Width="110" Height="30" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
-                <TextBlock Margin="-50 0 0 0" Width="110" Height="30" Text="Name" TextAlignment="Center" FontSize="15"/>
-                <Button x:Name="btnLogout" Visibility="Visible" Margin="0 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Logout" Style="{StaticResource BtnStyle}"/>
-            </StackPanel>
+            <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
+                <StackPanel  Orientation="Horizontal">
+                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20"/>
+                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
+                    <TextBlock Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
+                    <Button x:Name="btnLogout" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Logout" Style="{StaticResource BtnStyle}" Click="btnLogout_Click"/>
+                    <Button x:Name="btnAdd" Visibility="Visible" Margin="-240 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Patient" Style="{StaticResource BtnStyle}" Click="btnAdd_Click"/>
+                </StackPanel>
+            </Border>
+
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="130 0 0 0" Width="110" Height="30" Text="Search:" TextAlignment="Center" FontSize="20"/>
-                <TextBox x:Name="txtSearch" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 5 0 0" Style="{StaticResource TxtBoxStyle}"/>
+                <TextBlock Margin="130 10 0 0" Width="110" Height="30" Text="Search:" TextAlignment="Center" FontSize="20"/>
+                <TextBox x:Name="txtSearch" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}"/>
             </StackPanel>
             <ListView x:Name="lvPatients" Margin="0,10,0,0" Width="501" Height="310" BorderThickness="0" >
                 <ListView.View>
@@ -100,107 +164,95 @@
             </ListView>
         </StackPanel>
 
-        <StackPanel x:Name="pnlHeader" Visibility="Visible">
+        <StackPanel x:Name="pnlHeader" Visibility="Collapsed">
             <TextBlock Text="Header Text" Margin="0 10 0 0" HorizontalAlignment="Center" FontSize="20" Background="Transparent"/>
         </StackPanel>
-        
-        <StackPanel x:Name="pnlPatientInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
 
-            <StackPanel Margin= "50 20 0 0" Orientation="Vertical" >
-                <Image x:Name="imgPatient" Source="/Images/BlankImage.png" Margin="100 0 0 0" Width="200" Height="200"/>
-                <Button Visibility="Visible" x:Name="btnTakeImg" Margin="100 0 0 0" Content="Take Image" Click="btnTakeImg_Click" Style="{StaticResource BtnStyle}" />
-                <Button Visibility="Visible" x:Name="btnUploadPic" Margin="100 10 0 0" Content="Upload Image" Click="btnUploadPic_Click" Style="{StaticResource BtnStyle}" />
-            </StackPanel>
-            
-            <StackPanel Margin= "50 20 0 0"  Orientation="Vertical" >
-                <TextBlock Text="Name" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtName" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Sex" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtSex" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Age" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtAge" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Date of Birth" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtDob" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="BloodType" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <ComboBox x:Name="cbBloodType" Margin="0 0 0 0" Background="White" Width="95" Height="20" >
-                    <ComboBoxItem Content="A-"/>
-                    <ComboBoxItem Content="A+"/>
-                    <ComboBoxItem Content="B-"/>
-                    <ComboBoxItem Content="B+"/>
-                    <ComboBoxItem Content="AB-"/>
-                    <ComboBoxItem Content="AB+"/>
-                    <ComboBoxItem Content="O-"/>
-                    <ComboBoxItem Content="O+"/>
-                </ComboBox>
-                <TextBlock Text="Emergency Contact Name" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtECName" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Emergency Contact Number" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtECNum" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Patient Status" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <ComboBox x:Name="cbPStatus" Margin="0 0 0 0" Background="White" Width="95" Height="20"  >
-                    <ComboBoxItem Content="Admitted"/>
-                    <ComboBoxItem Content="Discharged"/>
-                    <ComboBoxItem Content="Critical"/>
-                    <ComboBoxItem Content="In treatment"/>
-                    <ComboBoxItem Content="Recovered"/>
-                </ComboBox>
-                <Button Visibility="Visible" x:Name="btnSaveChanges" Margin="0 10 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSaveChanges_Click"/>
-                <Button Visibility="Visible" x:Name="btnAddNew" Margin="0 10 0 0" Content="Add Patient" Style="{StaticResource BtnStyle}"/>
-            </StackPanel>
+        <StackPanel x:Name="pnlPatientInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
+            <Border Margin="50 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
+                <StackPanel Margin= "0 0 0 0" Orientation="Vertical" Background="White" >
+                    <Image x:Name="imgPatient" Source="/Images/BlankImage.png" Margin="0 0 0 0" Width="200" Height="200"/>
+                    <Button Visibility="Visible" x:Name="btnEdit" Margin="0 0 0 0" Content="Edit Profile" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnEdit_Click" />
+                    <Button Visibility="Collapsed" x:Name="btnTakeImg" Margin="-100 0 0 0" Content="Take Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnTakeImg_Click" />
+                    <Button Visibility="Collapsed" x:Name="btnUploadPic" Margin="100 -20 0 0" Content="Upload Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnUploadPic_Click" />
+                    <Button Visibility="Collapsed" x:Name="btnCancelEdit" Margin="0 10 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnCancelEdit_Click" />
+                </StackPanel>
+            </Border>
+
+            <Border Margin="60 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
+                <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Width="437" Background="White" Height="354" >
+                    <TextBlock Text="Name : " Margin="-375 10 0 0" Style="{StaticResource TxtBlockStyle}" Width="52"/>
+                    <TextBox x:Name="txtName" Text="test" Margin="50 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="380" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Sex : " Margin="-390 20 0 0" Style="{StaticResource TxtBlockStyle}" Width="40"/>
+                    <ComboBox x:Name="cbSex" Margin="-290 -20 0 0" Background="White" Width="65" Height="20" Style="{StaticResource cmbStyle}" >
+                        <ComboBoxItem Content="Male"/>
+                        <ComboBoxItem Content="Female"/>
+                    </ComboBox>
+                    <TextBlock Text="Age : " Margin="-170 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="45"/>
+                    <TextBox x:Name="txtAge" Text="test" Margin="-90 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="40" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Date of Birth : " Margin="60 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
+                    <TextBox x:Name="txtDob" Text="test" Margin="290 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="138" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="BloodType : " Margin="-350 20 0 0" Style="{StaticResource TxtBlockStyle}" Width="82"/>
+                    <ComboBox x:Name="cbBloodType" Margin="-175 -20 0 0" Background="White" Width="95" Height="20" Style="{StaticResource cmbStyle}">
+                        <ComboBoxItem Content="A-"/>
+                        <ComboBoxItem Content="A+"/>
+                        <ComboBoxItem Content="B-"/>
+                        <ComboBoxItem Content="B+"/>
+                        <ComboBoxItem Content="AB-"/>
+                        <ComboBoxItem Content="AB+"/>
+                        <ComboBoxItem Content="O-"/>
+                        <ComboBoxItem Content="O+"/>
+                    </ComboBox>
+                    <TextBlock Text="Patient Status : " Margin="75 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="106"/>
+                    <ComboBox x:Name="cbPStatus" Margin="270 -20 0 0" Background="White" Width="95" Height="20" Style="{StaticResource cmbStyle}" >
+                        <ComboBoxItem Content="Admitted"/>
+                        <ComboBoxItem Content="Discharged"/>
+                        <ComboBoxItem Content="Critical"/>
+                        <ComboBoxItem Content="In treatment"/>
+                        <ComboBoxItem Content="Recovered"/>
+                    </ComboBox>
+                    <TextBlock Text="Emergency Contact Name : " Margin="-260 20 0 0" Style="{StaticResource TxtBlockStyle}"/>
+                    <TextBox x:Name="txtECName" Margin="170 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="260" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Emergency Contact Number : " Margin="-246 20 0 0" Style="{StaticResource TxtBlockStyle}"/>
+                    <TextBox x:Name="txtECNum" Margin="182 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="248" HorizontalContentAlignment="Left"/>
+
+                    <Button Visibility="Collapsed" x:Name="btnSaveChanges" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSaveChanges_Click"/>
+                    <Button Visibility="Collapsed" x:Name="btnAddNew" Margin="0 10 0 0" Content="Add Patient" Style="{StaticResource BtnStyle}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
-            <StackPanel Margin= "50 20 0 0"  Orientation="Vertical" >
-                <TextBlock Text="Name" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtName2" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Medications" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtMed" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Allergies" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtAlrgy" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="Surgeries" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtSurg" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
-                <TextBlock Text="FamilyHistory" Margin="0 0 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtFamHist" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}"/>
+            <Border Margin="50 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2" Width="230" >
+                <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Background="White">
+                    <TextBlock Text="Name : " Margin="-165 10 0 0" Style="{StaticResource TxtBlockStyle}" Width="66"/>
+                    <TextBox x:Name="txtName2" Text="test" Margin="50 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="160" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Medication/s : " Margin="-121 15 0 0" Style="{StaticResource TxtBlockStyle}" Width="120" />
+                    <TextBox x:Name="txtMed" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Allergies : " Margin="-146 25 0 0" Style="{StaticResource TxtBlockStyle}" Width="71"/>
+                    <TextBox x:Name="txtAlrgy" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="Surgeries : " Margin="-144 25 0 0" Style="{StaticResource TxtBlockStyle}"/>
+                    <TextBox x:Name="txtSurg" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
+                    <TextBlock Text="FamilyHistory : " Margin="-117 25 0 0" Style="{StaticResource TxtBlockStyle}"/>
+                    <TextBox x:Name="txtFamHist" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
+                </StackPanel>
+            </Border>
 
-            </StackPanel>
-            <StackPanel Margin= "100 20 0 0"  Orientation="Vertical" >
-                <TextBlock Text="Checkups" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <ListView x:Name="lvCheckups" Margin="0,10,0,0" Width="401" Height="310" BorderThickness="0" >
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Column1}" />
-                            <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Column2}" />
-                            <GridViewColumn Header="Doctor/Nurse" Width="200" DisplayMemberBinding="{Binding Column3}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </StackPanel>
+            <Border Margin="80 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2">
+                <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Background="White">
+                    <TextBlock Text="Checkups" Margin="0 10 0 0" HorizontalAlignment="Center" Background="Transparent" Style="{StaticResource TxtBlockStyle}"/>
+                    <ListView x:Name="lvCheckups" Margin="0,10,0,0" Width="401" Height="310" BorderThickness="0" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Column1}" />
+                                <GridViewColumn Header="Date" Width="100" DisplayMemberBinding="{Binding Column2}" />
+                                <GridViewColumn Header="Doctor/Nurse" Width="200" DisplayMemberBinding="{Binding Column3}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Border>
         </StackPanel>
-
-
-            <!--<StackPanel x:Name="pnlPatientInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
-            <StackPanel Orientation="Vertical" >
-                <Image x:Name="imgPatient2" Source="/Images/BlankImage.png" Margin="100 0 0 0" Width="200" Height="200"/>
-            </StackPanel>
-            <StackPanel Margin= "50 30 0 0"  Orientation="Vertical" >
-                <TextBlock Text="Name" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pName" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Sex" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pSex" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Age" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pAge" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Date of Birth" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pDob" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Blood Type" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pBloodType" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Emergency Contact Name" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pECName" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Emergency Contact Number" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pECNum" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock Text="Patient Status" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-                <TextBlock x:Name="pStatus" Text="insert text" Margin="0 0 0 0" HorizontalAlignment="Center" Background="Transparent"/>
-            </StackPanel>
-        </StackPanel>-->
-
+        
     </Grid>
 </Window>
