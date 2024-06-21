@@ -139,6 +139,11 @@ namespace _2Y_2324_FinalsProject
                 GC.WaitForPendingFinalizers();
             }
         }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
 

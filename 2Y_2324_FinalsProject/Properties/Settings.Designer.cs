@@ -33,5 +33,16 @@ namespace _2Y_2324_FinalsProject.Properties {
                 return ((string)(this["PRMSConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=EVANLAPTOP\\SQLEXPRESS;Initial Catalog=Finals;Integrated Security=True" +
+            ";Connect Timeout=30;Encrypt=True;TrustServerCertificate=True")]
+        public string FinalsConnectionString {
+            get {
+                return ((string)(this["FinalsConnectionString"]));
+            }
+        }
     }
 }
