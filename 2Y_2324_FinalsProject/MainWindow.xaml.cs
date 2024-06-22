@@ -30,21 +30,24 @@ namespace _2Y_2324_FinalsProject
         FilterInfoCollection fic = null;
         VideoCaptureDevice vcd = null;
         DataClasses1DataContext _dbConn = null;
-        int access = 0;
+        int access = 1; //CHANGE TO 0 I JUST NEED IT FOR TESTING
         string currPID = null;
+        string currSID = null;
+        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
 
         public MainWindow()
         {
             InitializeComponent();
             _dbConn = new DataClasses1DataContext(Properties.Settings.Default.FinalsConnectionString);
         }
+
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             //For Logging In
             if (txtName.Text.Length > 0 && pbPass.Password.Length > 0)
             {
                 IQueryable<Staff> selectResults = from s in _dbConn.Staffs
-                                                  where s.Staff_Name == txtUser.Text
+                                                  where s.Staff_Id == txtUser.Text
                                                   select s;
                 if (selectResults.Count() == 1)
                 {
@@ -58,7 +61,6 @@ namespace _2Y_2324_FinalsProject
                             {
                                 pnlMain.Visibility = Visibility.Visible;
                                 pnlLogin.Visibility = Visibility.Collapsed;
-                                pnlHeader.Visibility = Visibility.Collapsed;
 
                                 access = 1;
                             }
@@ -66,10 +68,11 @@ namespace _2Y_2324_FinalsProject
                             {
                                 pnlMain.Visibility = Visibility.Visible;
                                 pnlLogin.Visibility = Visibility.Collapsed;
-                                pnlHeader.Visibility = Visibility.Collapsed;
 
                                 access = 2;
                             }
+
+                            txtLogin.Text = s.Staff_Name;
                         }
                         else
                             MessageBox.Show("Incorrect Password...");
@@ -104,15 +107,11 @@ namespace _2Y_2324_FinalsProject
 
             ofd.ShowDialog();
 
-            //FOR SAVING FILE LOC TO DATABASE ATA
             if (ofd.FileName.Length > 0)
             {
-                //txtPath.Text = ofd.FileName; eto
                 imgPatient.Source = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
             }
         }
-
-
 
         private void btnToggle_Click(object sender, RoutedEventArgs e)
         {
@@ -146,14 +145,14 @@ namespace _2Y_2324_FinalsProject
             }
         }
 
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
-
+            pnlLogin.Visibility = Visibility.Visible;
+            pnlMain.Visibility = Visibility.Collapsed;
+            txtUser.Text = string.Empty;
+            txtPass.Text = string.Empty;
+            access = 0;
+            pbPass.Clear();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -199,6 +198,13 @@ namespace _2Y_2324_FinalsProject
             GetPatients();
         }
 
+        private void btnBack2Main_Click(object sender, RoutedEventArgs e)
+        {
+            pnlPatient.Visibility = Visibility.Collapsed;
+            pnlStaff.Visibility = Visibility.Collapsed;
+            pnlMain.Visibility = Visibility.Visible;
+        }
+
         private void GetPatients()
         {
             lvPatients.Items.Clear();
@@ -211,7 +217,6 @@ namespace _2Y_2324_FinalsProject
                     lvPatients.Items.Add(new { Column1 = s.Patient_Id, Column2 = s.Patient_Name, Column3 = GetPatientStatus(s.PatientStatus_Id), Column4 = GetStaffName(s.Staff_Id)});
                 }
             }
-
         }
 
         private string GetPatientStatus(string id)
@@ -260,8 +265,9 @@ namespace _2Y_2324_FinalsProject
                 pnlPatient.Visibility = Visibility.Collapsed;
                 pnlPatientInfo.Visibility = Visibility.Visible;
                 pnlHeader.Visibility = Visibility.Visible;
+                btnBack2PList.Visibility = Visibility.Visible;
+                txtHeader.Text = "Patient Information";
 
-                Header.Text = "Patient Information";
                 dynamic selectedItem = lvPatients.SelectedItem;
                 currPID = selectedItem.Column1;
 
@@ -271,9 +277,11 @@ namespace _2Y_2324_FinalsProject
 
                 foreach (Patient p in selectResults)
                 {
+                    imgPatient.Source = new BitmapImage(new Uri(picPath + p.Patient_Image));
+
                     txtName.Text = p.Patient_Name;
                     txtAge.Text = p.Patient_Age.ToString();
-                    txtDob.Text = p.Patient_Birth.ToString("yyyy-MM-dd");
+                    txtDob.Text = p.Patient_Birth.ToString();
                     txtHeight.Text = p.Patient_Height.ToString();
                     txtWeight.Text = p.Patient_Weight.ToString();
                     txtECName.Text = p.Patient_EmergencyContactName;
@@ -337,32 +345,253 @@ namespace _2Y_2324_FinalsProject
             }
         }
 
+        private void btnBack2PList_Click(object sender, RoutedEventArgs e)
+        {
+            pnlPatient.Visibility = Visibility.Visible;
+            pnlPatientInfo.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Collapsed;
+            btnBack2PList.Visibility = Visibility.Collapsed;
+            txtHeader.Text = null;
+            currPID = null;
+        }
+
+        private void GetVitals()
+        {
+            lvVitals.Items.Clear();
+            IQueryable<Vital> selectResults = from s in _dbConn.Vitals
+                                              where s.Patient_Id == currPID
+                                              select s;
+
+            if (selectResults.Count() >= 1)
+            {
+                foreach (Vital s in selectResults)
+                {
+                    lvVitals.Items.Add(new { Column1 = s.Vitals_Id, Column2 = s.Checkup_Date, Column3 = GetStaffName(s.Staff_Id) });
+                }
+            }
+        }
+
+        private void btnHealthInfo_Click(object sender, RoutedEventArgs e)
+        {
+            btnBack2PList.Visibility = Visibility.Collapsed;
+            pnlPatientInfo.Visibility = Visibility.Collapsed;
+
+            pnlHealthInfo.Visibility = Visibility.Visible;
+            pnlHeader.Visibility = Visibility.Visible;
+            btnBack2PInfo.Visibility = Visibility.Visible;
+            txtHeader.Text = "Health Information";
+
+            IQueryable<HealthInfo> selectResults = from s in _dbConn.HealthInfos
+                                                   where s.Patient_Id == currPID
+                                                   select s;
+
+            foreach (HealthInfo p in selectResults)
+            {
+                txtName2.Text = GetPatientName(currPID);
+                txtMed.Text = p.HealthInfo_Medications;
+                txtAlrgy.Text = p.HealthInfo_Allergies;
+                txtSurg.Text = p.HealthInfo_Surgeries;
+                txtFamHist.Text = p.HealthInfo_FamilyHistory;
+                GetVitals();
+            }
+        }
+
+        private void btnBack2PInfo_Click(object sender, RoutedEventArgs e)
+        {
+            pnlHealthInfo.Visibility = Visibility.Collapsed;
+            btnBack2PInfo.Visibility = Visibility.Collapsed;
+            pnlPatientInfo.Visibility = Visibility.Visible;
+            pnlHeader.Visibility = Visibility.Visible;
+            btnBack2PList.Visibility = Visibility.Visible;
+            txtHeader.Text = "Patient Information";
+        }
+
+        private void lvVitals_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            string currVID = null;
+            if (lvVitals.SelectedItem != null)
+            {
+                pnlHealthInfo.Visibility = Visibility.Collapsed;
+                btnBack2PInfo.Visibility = Visibility.Collapsed;
+                pnlVitalsInfo.Visibility = Visibility.Visible;
+                pnlHeader.Visibility = Visibility.Visible;
+                btnBack2HInfo.Visibility = Visibility.Visible;
+                txtHeader.Text = "Vitals Information";
+
+                dynamic selectedItem = lvVitals.SelectedItem;
+                currVID = selectedItem.Column1;
+
+                IQueryable<Vital> selectResults = from s in _dbConn.Vitals
+                                                  where s.Vitals_Id == currVID
+                                                  select s;
+
+                foreach (Vital v in selectResults)
+                {
+                    txtDname.Text = GetStaffName(v.Staff_Id);
+                    txtName3.Text = GetPatientName(v.Patient_Id);
+                    txtDate.Text = v.Checkup_Date.ToString();
+                    txtTemp.Text = v.Patient_Temp.ToString();
+                    txtPulse.Text = v.Patient_PulseRate.ToString();
+                    txtRespi.Text = v.Patient_Respiration.ToString();
+                    txtsys.Text = v.Patient_Systolic.ToString();
+                    txtdia.Text = v.Patient_Diastolic.ToString();
+                }
+            }
+        }
+
+        private void btnBack2HInfo_Click(object sender, RoutedEventArgs e)
+        {
+            pnlHealthInfo.Visibility = Visibility.Visible;
+            btnBack2PInfo.Visibility = Visibility.Visible;
+            pnlVitalsInfo.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Visible;
+            btnBack2HInfo.Visibility = Visibility.Collapsed;
+            txtHeader.Text = "Health Information";
+        }
+
         private void btnStaff_Click(object sender, RoutedEventArgs e)
+        {
+            if (access == 2)
+            {
+                MessageBox.Show("Invalid Access...");
+            }
+            else
+            {
+                pnlMain.Visibility = Visibility.Collapsed;
+                pnlStaff.Visibility = Visibility.Visible;
+                GetStaffs();
+            }
+        }
+
+        private void GetStaffs()
+        {
+            lvStaff.Items.Clear();
+            IQueryable<Staff> selectResults = from s in _dbConn.Staffs
+                                                select s;
+            if (selectResults.Count() >= 1)
+            {
+                foreach (Staff s in selectResults)
+                {
+                    lvStaff.Items.Add(new { Column1 = s.Staff_Id, Column2 = s.Staff_Name, Column3 = GetStaffRole(s.StaffRole_Id), Column4 = GetStaffStatus(s.StaffStatus_Id) });
+                }
+            }
+        }
+
+        private string GetStaffRole(string id)
+        {
+            IQueryable<StaffRole> selectResults = selectResults = from s in _dbConn.StaffRoles
+                                                              where s.StaffRole_Id == id
+                                                              select s;
+            StaffRole pet = selectResults.FirstOrDefault();
+            if (pet != null)
+            {
+                return pet.StaffRole_Desc;
+            }
+            return null;
+        }
+
+        private string GetStaffStatus(string id)
+        {
+            IQueryable<StaffStatus> selectResults = selectResults = from s in _dbConn.StaffStatus
+                                                              where s.StaffStatus_Id == id
+                                                              select s;
+            StaffStatus pet = selectResults.FirstOrDefault();
+            if (pet != null)
+            {
+                return pet.StaffStatus_Desc;
+            }
+            return null;
+        }
+
+        private void lvStaff_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lvStaff.SelectedItem != null)
+            {
+                pnlStaff.Visibility = Visibility.Collapsed;
+                pnlStaffInfo.Visibility = Visibility.Visible;
+
+                dynamic selectedItem = lvStaff.SelectedItem;
+                currSID = selectedItem.Column1;
+
+                IQueryable<Staff> selectResults = from s in _dbConn.Staffs
+                                                    where s.Staff_Id == currSID
+                                                    select s;
+
+                foreach (Staff s in selectResults)
+                {
+                    txtNameS.Text = s.Staff_Name;
+                    txtPassS.Text = s.Staff_Password;
+
+                    switch (s.StaffRole_Id)
+                    {
+                        case "SR01":
+                            cbRole.SelectedIndex = 0;
+                            break;
+                        case "SR02":
+                            cbRole.SelectedIndex = 1;
+                            break;
+                        case "SR03":
+                            cbRole.SelectedIndex = 2;
+                            break;
+                    }
+
+                    switch (s.StaffStatus_Id)
+                    {
+                        case "SS01":
+                            cbStatus.SelectedIndex = 0;
+                            break;
+                        case "SS02":
+                            cbStatus.SelectedIndex = 1;
+                            break;
+                        case "SS03":
+                            cbStatus.SelectedIndex = 2;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void btnBackS_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void btnCheckUp_Click(object sender, RoutedEventArgs e)
+        private void btnAddS_Click(object sender, RoutedEventArgs e)
         {
 
-                pnlPatientInfo.Visibility = Visibility.Collapsed;
-                pnlHealthInfo.Visibility = Visibility.Visible;
-                pnlHeader.Visibility = Visibility.Visible;
+        }
 
-                Header.Text = "Health Information";
+        private void btnEdit1_Click(object sender, RoutedEventArgs e)
+        {
+            btnEdit1.Visibility = Visibility.Collapsed;
+            btnTakeImg1.Visibility = Visibility.Visible;
+            btnUploadPic1.Visibility = Visibility.Visible;
+            btnCancelEdit1.Visibility = Visibility.Visible;
+            btnSaveChanges1.Visibility = Visibility.Visible;
 
-                IQueryable<HealthInfo> selectResults = from s in _dbConn.HealthInfos
-                                                    where s.Patient_Id == currPID
-                                                    select s;
+            txtNameS.Style = null;
+            txtPassS.Style = null;
+            cbRole.Style = null;
+            cbStatus.Style = null;
+        }
 
-                foreach (HealthInfo p in selectResults)
-                {
-                    txtName2.Text = GetPatientName(currPID);
-                    txtMed.Text = p.HealthInfo_Medications;
-                    txtAlrgy.Text = p.HealthInfo_Allergies;
-                    txtSurg.Text = p.HealthInfo_Surgeries;
-                    txtFamHist.Text = p.HealthInfo_FamilyHistory;
-                }
+        private void btnCancelEdit1_Click(object sender, RoutedEventArgs e)
+        {
+            btnCancelEdit1.Visibility = Visibility.Collapsed;
+            btnTakeImg1.Visibility = Visibility.Collapsed;
+            btnUploadPic1.Visibility = Visibility.Collapsed;
+            btnEdit1.Visibility = Visibility.Visible;
+            btnSaveChanges1.Visibility = Visibility.Collapsed;
+
+            txtNameS.Style = (Style)FindResource("TxtBoxStyle2");
+            txtPassS.Style = (Style)FindResource("TxtBoxStyle2");
+            cbRole.Style = (Style)FindResource("cmbStyle");
+            cbStatus.Style = (Style)FindResource("cmbStyle");
+        }
+
+        private void btnAddPatient_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

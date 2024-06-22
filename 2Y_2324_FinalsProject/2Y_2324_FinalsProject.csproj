@@ -130,9 +130,6 @@
     <Resource Include="Images\logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BlankImage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
@@ -140,7 +137,13 @@
     <Resource Include="Images\unshow.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="PatientPics\" />
+    <Resource Include="Images\back.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\Test.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

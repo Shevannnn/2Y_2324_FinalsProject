@@ -25,7 +25,7 @@ namespace _2Y_2324_FinalsProject
     {
         FilterInfoCollection fic = null;
         VideoCaptureDevice vcd = null;
-        string fp1 = "C:/Users/Evan/source/repos/2Y_2324_FinalsProject/2Y_2324_FinalsProject/Images/";
+        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures";
 
         public CameraWin()
         {
@@ -114,14 +114,14 @@ namespace _2Y_2324_FinalsProject
         /// <param name="e"></param>
         private void btnCaptureImage_Click(object sender, RoutedEventArgs e)
         {
-            //if (vcd.IsRunning)
-            //{
-            //    ImageToFile("Test.png");
-            //    vcd.WaitForStop();
-            //    vcd = null;
-            //    //vcd.Stop();
-            //}
-            ImageToFile("test.png");
+            if (vcd.IsRunning)
+            {
+                string filePath = picPath + "Test.png";
+                ImageToFile(filePath);
+                vcd.WaitForStop();
+                vcd = null;
+                vcd.Stop();
+            }
             this.Close();
         }
 
