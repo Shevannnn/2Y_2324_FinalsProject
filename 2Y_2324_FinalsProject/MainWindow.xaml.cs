@@ -31,9 +31,11 @@ namespace _2Y_2324_FinalsProject
         VideoCaptureDevice vcd = null;
         DataClasses1DataContext _dbConn = null;
         int access = 1; //CHANGE TO 0 I JUST NEED IT FOR TESTING
+        string loggedIn = null;
         string currPID = null;
         string currSID = null;
         string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
+        string fileName = "";
 
         public MainWindow()
         {
@@ -63,6 +65,7 @@ namespace _2Y_2324_FinalsProject
                                 pnlLogin.Visibility = Visibility.Collapsed;
 
                                 access = 1;
+                                loggedIn = s.Staff_Id;
                             }
                             else if (s.StaffRole_Id == "SR02" || s.StaffStatus_Id == "SR03")
                             {
@@ -70,6 +73,7 @@ namespace _2Y_2324_FinalsProject
                                 pnlLogin.Visibility = Visibility.Collapsed;
 
                                 access = 2;
+                                loggedIn = s.Staff_Id;
                             }
 
                             txtLogin.Text = s.Staff_Name;
@@ -81,14 +85,6 @@ namespace _2Y_2324_FinalsProject
             }
             else
                 MessageBox.Show("Please Input Name and Password...");
-        }
-
-        private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
-        {
-            ////txtName.Style = (Style)FindResource("TxtBoxStyle");
-            //txtName.Style = null;
-            imgPatient.Source = new BitmapImage(new Uri("/Images/BlankImage.png", UriKind.Relative));
-
         }
 
         private void btnTakeImg_Click(object sender, RoutedEventArgs e)
@@ -109,6 +105,7 @@ namespace _2Y_2324_FinalsProject
 
             if (ofd.FileName.Length > 0)
             {
+                fileName = System.IO.Path.GetFileName(ofd.FileName); // Fully qualify Path
                 imgPatient.Source = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
             }
         }
@@ -167,6 +164,8 @@ namespace _2Y_2324_FinalsProject
             cbSex.Style = null;
             txtAge.Style = null;
             txtDob.Style = null;
+            txtHeight.Style = null;
+            txtWeight.Style = null;
             cbBloodType.Style = null;
             txtECName.Style = null;
             txtECNum.Style = null;
@@ -340,9 +339,153 @@ namespace _2Y_2324_FinalsProject
                             cbPStatus.SelectedIndex = 4;
                             break;
                     }
-
                 }
             }
+        }
+
+        private void btnAddPatient_Click(object sender, RoutedEventArgs e)
+        {
+            pnlPatient.Visibility = Visibility.Collapsed;
+            pnlPatientInfo.Visibility = Visibility.Visible;
+            pnlHeader.Visibility = Visibility.Visible;
+            btnBack2PList.Visibility = Visibility.Visible;
+            txtHeader.Text = "Patient Information";
+            imgPatient.Source = new BitmapImage(new Uri(picPath + "Default.png"));
+            ClearTBCB();
+        }
+
+        private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            Patient nPatient = new Patient();
+            nPatient.Patient_Id = "P03";
+            nPatient.Patient_Name = txtName.Text;
+            nPatient.Patient_Height = GetNum(txtHeight);
+            nPatient.Patient_Weight = GetNum(txtWeight);
+            nPatient.Patient_Age = GetNum(txtAge);
+            //nPatient.Patient_Birth = "idk";
+            nPatient.Patient_EmergencyContactName = txtECName.Text;
+            nPatient.Patient_EmergencyContactNum = txtECNum.Text;
+            nPatient.Staff_Id = loggedIn;
+
+            switch (cbSex.SelectedIndex)
+            {
+                case 0:
+                    nPatient.Patient_Sex = "Male";
+                    break;
+                case 1:
+                    nPatient.Patient_Sex = "Female";
+                    break;
+                default:
+                    nPatient.Patient_Sex = "";
+                    break;
+            }
+
+            switch (cbBloodType.SelectedIndex)
+            {
+                case 0:
+                    nPatient.BloodType_Id = "BT01";
+                    break;
+                case 1:
+                    nPatient.BloodType_Id = "BT02";
+                    break;
+                case 2:
+                    nPatient.BloodType_Id = "BT03";
+                    break;
+                case 3:
+                    nPatient.BloodType_Id = "BT04";
+                    break;
+                case 4:
+                    nPatient.BloodType_Id = "BT05";
+                    break;
+                case 5:
+                    nPatient.BloodType_Id = "BT06";
+                    break;
+                case 6:
+                    nPatient.BloodType_Id = "BT07";
+                    break;
+                default:
+                    nPatient.BloodType_Id = "";
+                    break;
+            }
+
+            switch (cbPStatus.SelectedIndex)
+            {
+                case 0:
+                    nPatient.PatientStatus_Id = "DS01";
+                    break;
+                case 1:
+                    nPatient.PatientStatus_Id = "DS02";
+                    break;
+                case 2:
+                    nPatient.PatientStatus_Id = "DS03";
+                    break;
+                case 3:
+                    nPatient.PatientStatus_Id = "DS04";
+                    break;
+                default:
+                    nPatient.PatientStatus_Id = "";
+                    break;
+            }
+
+            Uri defaultImageUri = new Uri(picPath + "Default.png");
+
+            // Load the default image
+            BitmapImage temp = new BitmapImage(defaultImageUri);
+
+            // Check if imgPatient.Source is the same as the default image
+            if (imgPatient.Source != null && imgPatient.Source is BitmapImage)
+            {
+                BitmapImage currentImage = imgPatient.Source as BitmapImage;
+
+                if (currentImage.UriSource == defaultImageUri)
+                {
+                    nPatient.Patient_Image = "Default.png";
+                }
+                else
+                {
+                    nPatient.Patient_Image = fileName;
+                }
+            }
+            _dbConn.Patients.InsertOnSubmit(nPatient);
+            // add if statement to handle not null shit
+            _dbConn.SubmitChanges();
+            MessageBox.Show("Succesfully added pet!");
+            ClearTBCB();
+
+        }
+        private int GetNum(TextBox txtbox)
+        {
+            bool isNum = false;
+            string uInput = "";
+            int num = 0;
+
+            uInput = txtbox.Text;
+            isNum = int.TryParse(uInput, out num);
+
+            if (!isNum)
+            {
+                MessageBox.Show($"{txtbox.Text} is not a number. Please try again.");
+                return -1;
+            }
+
+            return num;
+        }
+
+        private void ClearTBCB()
+        {
+            imgPatient.Source = new BitmapImage(new Uri(picPath + "Default.png"));
+
+            txtName.Text = "";
+            txtAge.Text = "";
+            txtDob.Text = "";
+            txtHeight.Text = "";
+            txtWeight.Text = "";
+            txtECName.Text = "";
+            txtECNum.Text = "";
+            cbSex.SelectedIndex = -1;
+            cbBloodType.SelectedIndex = -1;
+            cbPStatus.SelectedIndex = -1;
+
         }
 
         private void btnBack2PList_Click(object sender, RoutedEventArgs e)
@@ -509,6 +652,9 @@ namespace _2Y_2324_FinalsProject
             {
                 pnlStaff.Visibility = Visibility.Collapsed;
                 pnlStaffInfo.Visibility = Visibility.Visible;
+                pnlHeader.Visibility = Visibility.Visible;
+                btnBack2SList.Visibility = Visibility.Visible;
+                txtHeader.Text = "Staff Information";
 
                 dynamic selectedItem = lvStaff.SelectedItem;
                 currSID = selectedItem.Column1;
@@ -519,6 +665,8 @@ namespace _2Y_2324_FinalsProject
 
                 foreach (Staff s in selectResults)
                 {
+                    imgStaff.Source = new BitmapImage(new Uri(picPath + s.Staff_Image));
+
                     txtNameS.Text = s.Staff_Name;
                     txtPassS.Text = s.Staff_Password;
 
@@ -551,9 +699,12 @@ namespace _2Y_2324_FinalsProject
             }
         }
 
-        private void btnBackS_Click(object sender, RoutedEventArgs e)
+        private void btnBack2SList_Click(object sender, RoutedEventArgs e)
         {
-
+            pnlStaffInfo.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Collapsed;
+            txtHeader.Text = null;
+            pnlStaff.Visibility = Visibility.Visible;
         }
 
         private void btnAddS_Click(object sender, RoutedEventArgs e)
@@ -589,9 +740,7 @@ namespace _2Y_2324_FinalsProject
             cbStatus.Style = (Style)FindResource("cmbStyle");
         }
 
-        private void btnAddPatient_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
+
     }
 }

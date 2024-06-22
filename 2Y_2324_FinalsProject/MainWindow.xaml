@@ -224,6 +224,7 @@
                     <Button x:Name="btnBack2PList" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PList_Click" />
                     <Button x:Name="btnBack2PInfo" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PInfo_Click" />
                     <Button x:Name="btnBack2HInfo" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2HInfo_Click" />
+                    <Button x:Name="btnBack2SList" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2SList_Click" />
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -353,7 +354,7 @@
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Staff List" TextAlignment="Center" FontSize="20"/>
                     <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
                     <TextBlock Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
-                    <Button x:Name="btnBackS" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Back" Style="{StaticResource BtnStyle}" Click="btnBackS_Click"/>
+                    <Button x:Name="btnBackS" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Back" Style="{StaticResource BtnStyle}" Click="btnBack2Main_Click"/>
                     <Button x:Name="btnAddS" Visibility="Visible" Margin="-240 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Staff" Style="{StaticResource BtnStyle}" Click="btnAddS_Click"/>
                 </StackPanel>
             </Border>

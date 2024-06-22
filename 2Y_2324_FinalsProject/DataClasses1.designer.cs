@@ -1147,6 +1147,8 @@ namespace _2Y_2324_FinalsProject
 		
 		private string _StaffStatus_Id;
 		
+		private string _Staff_Image;
+		
 		private EntitySet<Patient> _Patients;
 		
 		private EntityRef<StaffRole> _StaffRole;
@@ -1167,6 +1169,8 @@ namespace _2Y_2324_FinalsProject
     partial void OnStaffRole_IdChanged();
     partial void OnStaffStatus_IdChanging(string value);
     partial void OnStaffStatus_IdChanged();
+    partial void OnStaff_ImageChanging(string value);
+    partial void OnStaff_ImageChanged();
     #endregion
 		
 		public Staff()
@@ -1281,6 +1285,26 @@ namespace _2Y_2324_FinalsProject
 					this._StaffStatus_Id = value;
 					this.SendPropertyChanged("StaffStatus_Id");
 					this.OnStaffStatus_IdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Staff_Image", DbType="VarChar(255)")]
+		public string Staff_Image
+		{
+			get
+			{
+				return this._Staff_Image;
+			}
+			set
+			{
+				if ((this._Staff_Image != value))
+				{
+					this.OnStaff_ImageChanging(value);
+					this.SendPropertyChanging();
+					this._Staff_Image = value;
+					this.SendPropertyChanged("Staff_Image");
+					this.OnStaff_ImageChanged();
 				}
 			}
 		}

@@ -54,6 +54,7 @@
       <Column Name="Staff_Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StaffRole_Id" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="StaffStatus_Id" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Staff_Image" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="Staff_Patient" Member="Patients" ThisKey="Staff_Id" OtherKey="Staff_Id" Type="Patient" />
       <Association Name="StaffRole_Staff" Member="StaffRole" ThisKey="StaffRole_Id" OtherKey="StaffRole_Id" Type="StaffRole" IsForeignKey="true" />
       <Association Name="StaffStatus_Staff" Member="StaffStatus" ThisKey="StaffStatus_Id" OtherKey="StaffStatus_Id" Type="StaffStatus" IsForeignKey="true" />

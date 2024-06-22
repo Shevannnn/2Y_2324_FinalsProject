@@ -140,10 +140,20 @@
     <Resource Include="Images\back.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Default.png" />
+    <Resource Include="Images\Pictures\Default.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Pictures\Test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\Melgar_Julius.jpg" />
+    <Resource Include="Images\Pictures\Palo_Evan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\Louie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Default.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
