@@ -27,8 +27,6 @@ namespace _2Y_2324_FinalsProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        FilterInfoCollection fic = null;
-        VideoCaptureDevice vcd = null;
         DataClasses1DataContext _dbConn = null;
         int access = 1; //CHANGE TO 0 I JUST NEED IT FOR TESTING
         string loggedIn = null;
@@ -281,11 +279,19 @@ namespace _2Y_2324_FinalsProject
 
                     txtName.Text = p.Patient_Name;
                     txtAge.Text = p.Patient_Age.ToString();
-                    txtDob.Text = p.Patient_Birth.ToString();
                     txtHeight.Text = p.Patient_Height.ToString();
                     txtWeight.Text = p.Patient_Weight.ToString();
                     txtECName.Text = p.Patient_EmergencyContactName;
                     txtECNum.Text = p.Patient_EmergencyContactNum.ToString();
+
+                    if (p.Patient_Birth.HasValue)
+                    {
+                        txtDob.Text = p.Patient_Birth.Value.ToString("MM-dd-yyyy");
+                    }
+                    else
+                    {
+                        txtDob.Text = "N/A";
+                    }
 
                     switch (p.Patient_Sex)
                     {
@@ -376,6 +382,20 @@ namespace _2Y_2324_FinalsProject
             return "P" + num.ToString("D2");
         }
 
+        private DateTime? GetDateTime(TextBox txtbox)
+        {
+            DateTime dateValue;
+            bool isDate = DateTime.TryParse(txtbox.Text, out dateValue);
+
+            if (!isDate)
+            {
+                MessageBox.Show($"{txtbox.Text} is not a valid date. Please enter a valid date.");
+                return null;
+            }
+
+            return dateValue;
+        }
+
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
             // Validate numeric inputs
@@ -390,15 +410,25 @@ namespace _2Y_2324_FinalsProject
             }
 
             Patient nPatient = new Patient();
-            nPatient.Patient_Id = GeneratePID(GetPID());
+            nPatient.Patient_Id = "P07";
             nPatient.Patient_Name = txtName.Text;
             nPatient.Patient_Height = height;
             nPatient.Patient_Weight = weight;
             nPatient.Patient_Age = age;
-            // nPatient.Patient_Birth = "idk"; // Uncomment and set properly if needed
             nPatient.Patient_EmergencyContactName = txtECName.Text;
             nPatient.Patient_EmergencyContactNum = txtECNum.Text;
             nPatient.Staff_Id = loggedIn;
+
+            DateTime? birthDate = GetDateTime(txtDob);
+            if (birthDate != null)
+            {
+                nPatient.Patient_Birth = birthDate.Value;
+            }
+            else
+            {
+                MessageBox.Show("wrong");
+                return;
+            }
 
             switch (cbSex.SelectedIndex)
             {
@@ -797,7 +827,15 @@ namespace _2Y_2324_FinalsProject
             pnlVitalsInfo.Visibility = Visibility.Collapsed;
             pnlHeader.Visibility = Visibility.Visible;
             btnBack2HInfo.Visibility = Visibility.Collapsed;
+            btnAddVitals.Visibility = Visibility.Collapsed;
             txtHeader.Text = "Health Information";
+            txtName3.Style = (Style)FindResource("TxtBoxStyle2");
+            txtDate.Style = (Style)FindResource("TxtBoxStyle2");
+            txtTemp.Style = (Style)FindResource("TxtBoxStyle2");
+            txtPulse.Style = (Style)FindResource("TxtBoxStyle2");
+            txtRespi.Style = (Style)FindResource("TxtBoxStyle2");
+            txtsys.Style = (Style)FindResource("TxtBoxStyle2");
+            txtdia.Style = (Style)FindResource("TxtBoxStyle2");
         }
 
         private void btnStaff_Click(object sender, RoutedEventArgs e)
@@ -948,6 +986,46 @@ namespace _2Y_2324_FinalsProject
             cbStatus.Style = (Style)FindResource("cmbStyle");
         }
 
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string search = txtSearch.Text.ToUpper();
+            SearchPatients(search);
+        }
 
+        private void SearchPatients(string searchText)
+        {
+            lvPatients.Items.Clear();
+            IQueryable<Patient> searchResults = from s in _dbConn.Patients
+                                                where s.Patient_Name.ToUpper().Contains(searchText)
+                                                select s;
+            if (searchResults.Count() >= 1)
+            {
+                foreach (Patient s in searchResults)
+                {
+                    lvPatients.Items.Add(new { Column1 = s.Patient_Id, Column2 = s.Patient_Name, Column3 = GetPatientStatus(s.PatientStatus_Id), Column4 = GetStaffName(s.Staff_Id) });
+                }
+            }
+        }
+
+        private void txtSearch1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string search = (string)txtSearch1.Text.ToUpper();
+            SearchStaff(search);
+        }
+
+        private void SearchStaff(string searchText)
+        {
+            lvStaff.Items.Clear();
+            IQueryable<Staff> searchResults = from s in _dbConn.Staffs
+                                                where s.Staff_Name.ToUpper().Contains(searchText)
+                                                select s;
+            if (searchResults.Count() >= 1)
+            {
+                foreach (Staff s in searchResults)
+                {
+                    lvStaff.Items.Add(new { Column1 = s.Staff_Id, Column2 = s.Staff_Name, Column3 = GetStaffRole(s.StaffRole_Id), Column4 = GetStaffStatus(s.StaffStatus_Id) });
+                }
+            }
+        }
     }
 }

@@ -67,19 +67,48 @@
         <Style x:Key="btnStyle2" TargetType="Button">
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="200"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}"
-                             Stroke="{TemplateBinding BorderBrush}"
-                             StrokeThickness="{TemplateBinding BorderThickness}"/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border BorderBrush="Black" BorderThickness="3" CornerRadius="10">
+                                <Image Source="/Images/patient.png" Stretch="UniformToFill">
+                                    <Image.OpacityMask>
+                                        <ImageBrush ImageSource="/Images/patient.png" Stretch="UniformToFill" TileMode="None" />
+                                    </Image.OpacityMask>
+                                </Image>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnStyle2.1" TargetType="Button">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="200"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Border BorderBrush="Black" BorderThickness="3" CornerRadius="10">
+                                <Image Source="/Images/admin.png" Stretch="UniformToFill">
+                                    <Image.OpacityMask>
+                                        <ImageBrush ImageSource="/Images/admin.png" Stretch="Fill" TileMode="None" />
+                                    </Image.OpacityMask>
+                                </Image>
+                            </Border>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -149,7 +178,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
 
     <Grid Background="AliceBlue" >
@@ -176,7 +204,7 @@
             <Button x:Name="btnLogin" Content="LogIn" Margin="0 20 0 0" BorderThickness="2" BorderBrush="Black" Style="{StaticResource BtnStyle}" Click="btnLogin_Click"/>
         </StackPanel>
 
-        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
+        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Visible">
             <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Main Menu" TextAlignment="Center" FontSize="20"/>
@@ -187,7 +215,9 @@
             </Border>
 
             <Button x:Name="btnPatient" Content="Patients" Style="{StaticResource btnStyle2}" Margin="-300 40 0 0" Click="btnPatient_Click"/>
-            <Button x:Name="btnStaff" Content="Staffs" Style="{StaticResource btnStyle2}" Margin="300 -200 0 0" Click="btnStaff_Click"/>
+            <Button x:Name="btnStaff" Content="Staffs" Style="{StaticResource btnStyle2.1}" Margin="300 -200 0 0" Click="btnStaff_Click"/>
+            <TextBlock Margin="-300 10 0 0" Width="110" Height="25" Text="Patient" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            <TextBlock Margin="300 -30 0 0" Width="110" Height="25" Text="Admin" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
         </StackPanel>
 
         <StackPanel x:Name="pnlPatient" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
@@ -203,7 +233,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="130 10 0 0" Width="110" Height="30" Text="Search:" TextAlignment="Center" FontSize="20"/>
-                <TextBox x:Name="txtSearch" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}"/>
+                <TextBox x:Name="txtSearch" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}" TextChanged="txtSearch_TextChanged"/>
             </StackPanel>
             <ListView x:Name="lvPatients" Margin="0,10,0,0" Width="501" Height="310" BorderThickness="0" MouseDoubleClick="lvPatients_MouseDoubleClick" >
                 <ListView.View>
@@ -284,7 +314,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
+        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
             <Border Margin="50 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2" Width="230" >
                 <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Background="White">
                     <TextBlock Text="Name : " Margin="-165 10 0 0" Style="{StaticResource TxtBlockStyle}" Width="66"/>
@@ -365,7 +395,7 @@
             </Border>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="130 10 0 0" Width="110" Height="30" Text="Search:" TextAlignment="Center" FontSize="20"/>
-                <TextBox x:Name="txtSearch1" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}"/>
+                <TextBox x:Name="txtSearch1" Width="300" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="13" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle}" TextChanged="txtSearch1_TextChanged"/>
             </StackPanel>
             <ListView x:Name="lvStaff" Margin="0,10,0,0" Width="501" Height="310" BorderThickness="0" MouseDoubleClick="lvStaff_MouseDoubleClick" >
                 <ListView.View>
