@@ -176,7 +176,7 @@
             <Button x:Name="btnLogin" Content="LogIn" Margin="0 20 0 0" BorderThickness="2" BorderBrush="Black" Style="{StaticResource BtnStyle}" Click="btnLogin_Click"/>
         </StackPanel>
 
-        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Visible">
+        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
             <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Main Menu" TextAlignment="Center" FontSize="20"/>
@@ -284,7 +284,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
+        <StackPanel x:Name="pnlHealthInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Visible" >
             <Border Margin="50 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2" Width="230" >
                 <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Background="White">
                     <TextBlock Text="Name : " Margin="-165 10 0 0" Style="{StaticResource TxtBlockStyle}" Width="66"/>
@@ -297,6 +297,9 @@
                     <TextBox x:Name="txtSurg" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
                     <TextBlock Text="FamilyHistory : " Margin="-117 25 0 0" Style="{StaticResource TxtBlockStyle}"/>
                     <TextBox x:Name="txtFamHist" Text="test" Margin="0 0 0 0" Style="{StaticResource TxtBoxStyle2}" Width="209" HorizontalContentAlignment="Left"/>
+                    <Button Visibility="Visible" x:Name="btnEditHealth" Margin="0 20 0 0" Content="Edit Health Info" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="135" Height="25" Style="{StaticResource BtnStyle}" Click="btnEditHealth_Click" />
+                    <Button Visibility="Collapsed" x:Name="btnSaveHealth" Margin="-105 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" FontSize="13" Click="btnSaveHealth_Click" />
+                    <Button Visibility="Collapsed" x:Name="btnCancelEditHealth" Margin="105 -24 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="106" Height="25" Style="{StaticResource BtnStyle}" Click="btnCancelEditHealth_Click" />
                 </StackPanel>
             </Border>
 
@@ -312,6 +315,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <Button Visibility="Visible" x:Name="btnNewVitals" Margin="105 -50 0 0" Content="add new vital" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="106" Height="25" Style="{StaticResource BtnStyle}" Click="btnNewVitals_Click" />
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -320,8 +324,8 @@
             <StackPanel Margin= "50 20 0 20" Orientation="Vertical" Background="White" Width="200" Height="200" >
                 <TextBlock Text="Doctor In Charge : " Margin="0 10 0 0" Style="{StaticResource TxtBlockStyle}" Width="171"/>
                 <TextBox x:Name="txtDname" Text="test" Margin="0 10 0 0" Style="{StaticResource TxtBoxStyle2}" Width="180" HorizontalContentAlignment="Center"/>
-                <Button Visibility="Visible" x:Name="btnEditVital" Margin="0 80 0 0" Content="Edit Vitals" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" />
-                <Button Visibility="Collapsed" x:Name="btnCancelEditVital" Margin="0 80 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}"  />
+                <Button Visibility="Visible" x:Name="btnEditVital" Margin="0 80 0 0" Content="Edit Vitals" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnEditVital_Click" />
+                <Button Visibility="Collapsed" x:Name="btnCancelEditVital" Margin="0 80 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnCancelEditVital_Click"  />
             </StackPanel>
 
             <StackPanel Margin= "60 20 0 20"  Orientation="Vertical" Width="437" Height="354" Background="White" >
@@ -344,7 +348,8 @@
                 <TextBox x:Name="txtdia" Text="test" Margin="-5 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="30" HorizontalContentAlignment="Left"/>
                 <TextBlock Text="Sys. / Dia." Margin="90 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="66"/>
 
-                <Button Visibility="Collapsed" x:Name="btnSaveVitals" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}"/>
+                <Button Visibility="Collapsed" x:Name="btnAddVitals" Margin="0 20 0 0" Content="add new" Style="{StaticResource BtnStyle}" Click="btnAddVitals_Click"/>
+                <Button Visibility="Collapsed" x:Name="btnSaveVitals" Margin="0 20 0 0" Content="save edit" Style="{StaticResource BtnStyle}" Click="btnSaveVitals_Click"/>
             </StackPanel>
         </StackPanel>
 
