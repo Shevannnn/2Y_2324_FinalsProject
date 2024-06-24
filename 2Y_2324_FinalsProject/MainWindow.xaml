@@ -181,8 +181,8 @@
     </Window.Resources>
 
     <Grid Background="AliceBlue" >
-        <StackPanel x:Name="pnlLogin" Margin="0" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Collapsed">
-            <Image Source="/Images/logo.jpg" Margin="0 50 0 0" Width="200" Height="220"/>
+        <StackPanel x:Name="pnlLogin" Margin="0" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Visible">
+            <Image Source="/Images/logo.png" Margin="0 50 0 0" Width="200" Height="220"/>
             <TextBlock Text=" Username :" FontSize="15" Margin="10 -10 115 -5" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold" />
             <TextBox x:Name="txtUser" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="verdana" FontSize="13" Margin="0 5 0 0" Style="{StaticResource TxtBoxStyle}"/>
             <TextBlock Text=" Password :" FontSize="15" Margin="10 5 115 -10" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold"/>
@@ -204,7 +204,7 @@
             <Button x:Name="btnLogin" Content="LogIn" Margin="0 20 0 0" BorderThickness="2" BorderBrush="Black" Style="{StaticResource BtnStyle}" Click="btnLogin_Click"/>
         </StackPanel>
 
-        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Visible">
+        <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
             <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Main Menu" TextAlignment="Center" FontSize="20"/>
@@ -281,12 +281,14 @@
                 <TextBox x:Name="txtAge" Text="test" Margin="-90 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="40" HorizontalContentAlignment="Left"/>
                 <TextBlock Text="Date of Birth : " Margin="60 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
                 <TextBox x:Name="txtDob" Text="test" Margin="290 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="138" HorizontalContentAlignment="Left"/>
-                <TextBlock Text="Height(cm) : " Margin="-350 20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
-                <TextBox x:Name="txtHeight" Text="test" Margin="-200 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="50" HorizontalContentAlignment="Left"/>
-                <TextBlock Text="Weight(kg) : " Margin="-100 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
-                <TextBox x:Name="txtWeight" Text="test" Margin="40 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="50" HorizontalContentAlignment="Left"/>
-                <TextBlock Text="BloodType : " Margin="150 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="82"/>
-                <ComboBox x:Name="cbBloodType" Margin="270 -20 0 0" Background="White" Width="50" Height="20" Style="{StaticResource cmbStyle}">
+                <TextBlock Text="Height : " Margin="-370 20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
+                <TextBox x:Name="txtHeight" Text="test" Margin="-280 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="30" HorizontalContentAlignment="Left"/>
+                <TextBlock Text="cm" Margin="-230 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="23"/>
+                <TextBlock Text="Weight : " Margin="-110 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="91"/>
+                <TextBox x:Name="txtWeight" Text="test" Margin="-20 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="30" HorizontalContentAlignment="Left"/>
+                <TextBlock Text="kg" Margin="30 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="23"/>
+                <TextBlock Text="BloodType : " Margin="160 -20 0 0" Style="{StaticResource TxtBlockStyle}" Width="82"/>
+                <ComboBox x:Name="cbBloodType" Margin="290 -20 0 0" Background="White" Width="50" Height="20" Style="{StaticResource cmbStyle}">
                     <ComboBoxItem Content="A-"/>
                     <ComboBoxItem Content="A+"/>
                     <ComboBoxItem Content="B-"/>
@@ -306,11 +308,11 @@
                 </ComboBox>
                 <TextBlock Text="Emergency Contact Name : " Margin="-260 20 0 0" Style="{StaticResource TxtBlockStyle}"/>
                 <TextBox x:Name="txtECName" Margin="170 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="260" HorizontalContentAlignment="Left"/>
-                <TextBlock Text="Emergency Contact Number : " Margin="-246 20 0 0" Style="{StaticResource TxtBlockStyle}"/>
-                <TextBox x:Name="txtECNum" Margin="182 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="248" HorizontalContentAlignment="Left"/>
+                <TextBlock Text="Emergency Contact Info : " Margin="-246 20 0 0" Style="{StaticResource TxtBlockStyle}"/>
+                <TextBox x:Name="txtECNum" Margin="170 -20 0 0" Style="{StaticResource TxtBoxStyle2}" Width="248" HorizontalContentAlignment="Left"/>
 
-                <Button Visibility="Collapsed" x:Name="btnSaveChanges" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSaveChanges_Click"/>
-                <Button Visibility="Collapsed" x:Name="btnAddNew" Margin="0 10 0 0" Content="Add Patient" Style="{StaticResource BtnStyle}"/>
+                <Button Visibility="Collapsed" x:Name="btnSavePatient" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSavePatient_Click"/>
+                <Button Visibility="Collapsed" x:Name="btnAddNew" Margin="0 10 0 0" Content="Add Patient" Style="{StaticResource BtnStyle}" Click="btnAddNew_Click"/>
             </StackPanel>
         </StackPanel>
 
@@ -336,7 +338,7 @@
             <Border Margin="80 20 0 20" BorderBrush="Black" BorderThickness="2" CornerRadius="2">
                 <StackPanel Margin= "0 0 0 0"  Orientation="Vertical" Background="White">
                     <TextBlock Text="Vitals Checkup" Margin="0 10 0 0" HorizontalAlignment="Center" Background="Transparent" Style="{StaticResource TxtBlockStyle}"/>
-                    <ListView x:Name="lvVitals" Margin="0,10,0,0" Width="401" Height="310" BorderThickness="0" MouseDoubleClick="lvVitals_MouseDoubleClick" >
+                    <ListView x:Name="lvVitals" Margin="0,10,0,0" Width="401" Height="250" BorderThickness="0" MouseDoubleClick="lvVitals_MouseDoubleClick" >
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Column1}" />
@@ -345,7 +347,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Button Visibility="Visible" x:Name="btnNewVitals" Margin="105 -50 0 0" Content="add new vital" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="106" Height="25" Style="{StaticResource BtnStyle}" Click="btnNewVitals_Click" />
+                    <Button Visibility="Visible" x:Name="btnNewVitals" Margin="0 10 0 0" Content="Add New Vital" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="106" Height="25" Style="{StaticResource BtnStyle}" Click="btnNewVitals_Click" />
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -390,7 +392,7 @@
                     <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
                     <TextBlock Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
                     <Button x:Name="btnBackS" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Back" Style="{StaticResource BtnStyle}" Click="btnBack2Main_Click"/>
-                    <Button x:Name="btnAddS" Visibility="Visible" Margin="-240 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Staff" Style="{StaticResource BtnStyle}" Click="btnAddS_Click"/>
+                    <Button x:Name="btnNewStaff" Visibility="Visible" Margin="-240 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Staff" Style="{StaticResource BtnStyle}" Click="btnNewStaff_Click"/>
                 </StackPanel>
             </Border>
             <StackPanel Orientation="Horizontal">
@@ -411,11 +413,11 @@
 
         <StackPanel x:Name="pnlStaffInfo" Margin="0 40 0 0" Orientation="Horizontal" Visibility="Collapsed" >
             <StackPanel Margin= "50 20 0 20" Orientation="Vertical" Background="White">
-                <Image x:Name="imgStaff" Source="/Images/BlankImage.png" Margin="0 0 0 0" Width="200" Height="200"/>
-                <Button Visibility="Visible" x:Name="btnEdit1" Margin="0 0 0 0" Content="Edit Profile" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnEdit1_Click"  />
-                <Button Visibility="Collapsed" x:Name="btnTakeImg1" Margin="-100 0 0 0" Content="Take Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" />
-                <Button Visibility="Collapsed" x:Name="btnUploadPic1" Margin="100 -20 0 0" Content="Upload Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" />
-                <Button Visibility="Collapsed" x:Name="btnCancelEdit1" Margin="0 10 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnCancelEdit1_Click"/>
+                <Image x:Name="imgStaff" Source="/Images/Default.png" Margin="0 0 0 0" Width="200" Height="200"/>
+                <Button Visibility="Visible" x:Name="btnEditS" Margin="0 0 0 0" Content="Edit Profile" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnEditS_Click"  />
+                <Button Visibility="Collapsed" x:Name="btnTakeImgS" Margin="-100 0 0 0" Content="Take Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnTakeImg_Click" />
+                <Button Visibility="Collapsed" x:Name="btnUploadPicS" Margin="100 -20 0 0" Content="Upload Image" FontFamily="verdana" Background="#FFFFAE80" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnUploadPicS_Click" />
+                <Button Visibility="Collapsed" x:Name="btnCancelEditS" Margin="0 10 0 0" Content="Cancel Edit" FontFamily="verdana" Background="#FF474D" FontSize="13" BorderBrush="Transparent" Width="100" Height="20" Style="{StaticResource BtnStyle}" Click="btnCancelEditS_Click"/>
             </StackPanel>
 
             <StackPanel Margin= "60 20 0 20"  Orientation="Vertical" Width="437" Background="White" Height="354" >
@@ -433,9 +435,10 @@
                 <ComboBox x:Name="cbStatus" Margin="160 -20 0 0" Background="White" Width="95" Height="20" Style="{StaticResource cmbStyle}">
                     <ComboBoxItem Content="Available"/>
                     <ComboBoxItem Content="Unavailable"/>
+                    <ComboBoxItem Content="On Leave"/>
                 </ComboBox>
-                <Button Visibility="Collapsed" x:Name="btnSaveChanges1" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSaveChanges_Click"/>
-                <Button Visibility="Collapsed" x:Name="btnAddNew1" Margin="0 10 0 0" Content="Add Patient" Style="{StaticResource BtnStyle}"/>
+                <Button Visibility="Collapsed" x:Name="btnSaveStaff" Margin="0 20 0 0" Content="Save Changes" Style="{StaticResource BtnStyle}" Click="btnSaveStaff_Click"/>
+                <Button Visibility="Collapsed" x:Name="btnAddStaff" Margin="0 10 0 0" Content="Add Staff" Style="{StaticResource BtnStyle}" Click="btnAddStaff_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

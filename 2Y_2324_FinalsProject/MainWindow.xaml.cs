@@ -28,9 +28,9 @@ namespace _2Y_2324_FinalsProject
     public partial class MainWindow : Window
     {
         DataClasses1DataContext _dbConn = null;
-        int access = 1; //CHANGE TO 0 I JUST NEED IT FOR TESTING
+        int access = 0;
         string loggedIn = null;
-        string currPID = "S01";
+        string currPID = null;
         string currSID = null;
         string currVID = null;
         string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
@@ -157,7 +157,7 @@ namespace _2Y_2324_FinalsProject
             btnTakeImg.Visibility = Visibility.Visible;
             btnUploadPic.Visibility = Visibility.Visible;
             btnCancelEdit.Visibility = Visibility.Visible;
-            btnSaveChanges.Visibility = Visibility.Visible;
+            btnSavePatient.Visibility = Visibility.Visible;
 
             txtName.Style = null;
             cbSex.Style = null;
@@ -177,12 +177,14 @@ namespace _2Y_2324_FinalsProject
             btnTakeImg.Visibility = Visibility.Collapsed;
             btnUploadPic.Visibility = Visibility.Collapsed;
             btnEdit.Visibility = Visibility.Visible;
-            btnSaveChanges.Visibility = Visibility.Collapsed;
+            btnSavePatient.Visibility = Visibility.Collapsed;
 
             txtName.Style = (Style)FindResource("TxtBoxStyle2");
             cbSex.Style = (Style)FindResource("cmbStyle");
             txtAge.Style = (Style)FindResource("TxtBoxStyle2");
             txtDob.Style = (Style)FindResource("TxtBoxStyle2");
+            txtHeight.Style = (Style)FindResource("TxtBoxStyle2");
+            txtWeight.Style = (Style)FindResource("TxtBoxStyle2");
             cbBloodType.Style = (Style)FindResource("cmbStyle");
             txtECName.Style = (Style)FindResource("TxtBoxStyle2");
             txtECNum.Style = (Style)FindResource("TxtBoxStyle2");
@@ -258,9 +260,11 @@ namespace _2Y_2324_FinalsProject
 
         private void lvPatients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(lvPatients.SelectedItem != null)
+            if (lvPatients.SelectedItem != null)
             {
                 pnlPatient.Visibility = Visibility.Collapsed;
+                btnHealthInfo.Visibility = Visibility.Visible;
+                btnEdit.Visibility = Visibility.Visible;
                 pnlPatientInfo.Visibility = Visibility.Visible;
                 pnlHeader.Visibility = Visibility.Visible;
                 btnBack2PList.Visibility = Visibility.Visible;
@@ -275,7 +279,15 @@ namespace _2Y_2324_FinalsProject
 
                 foreach (Patient p in selectResults)
                 {
-                    imgPatient.Source = new BitmapImage(new Uri(picPath + p.Patient_Image));
+                    if (p.Patient_Image != null)
+                    {
+                        imgPatient.Source = new BitmapImage(new Uri(picPath + p.Patient_Image));
+                    }
+                    else
+                    {
+                        p.Patient_Image = "Default.png";
+                        imgPatient.Source = new BitmapImage(new Uri(picPath + p.Patient_Image));
+                    }
 
                     txtName.Text = p.Patient_Name;
                     txtAge.Text = p.Patient_Age.ToString();
@@ -353,12 +365,48 @@ namespace _2Y_2324_FinalsProject
         private void btnAddPatient_Click(object sender, RoutedEventArgs e)
         {
             pnlPatient.Visibility = Visibility.Collapsed;
+            btnEdit.Visibility = Visibility.Collapsed;
+            btnHealthInfo.Visibility = Visibility.Collapsed;
+            btnTakeImg.Visibility = Visibility.Visible;
+            btnUploadPic.Visibility = Visibility.Visible;
+            btnAddNew.Visibility = Visibility.Visible;
             pnlPatientInfo.Visibility = Visibility.Visible;
             pnlHeader.Visibility = Visibility.Visible;
             btnBack2PList.Visibility = Visibility.Visible;
             txtHeader.Text = "Patient Information";
             imgPatient.Source = new BitmapImage(new Uri(picPath + "Default.png"));
+            SwapStylePatient();
             ClearTBCB();
+        }
+
+        private void SwapStylePatient()
+        {
+            if (txtName.Style != null)
+            {
+                txtName.Style = null;
+                cbSex.Style = null;
+                txtAge.Style = null;
+                txtDob.Style = null;
+                txtHeight.Style = null;
+                txtWeight.Style = null;
+                cbBloodType.Style = null;
+                txtECName.Style = null;
+                txtECNum.Style = null;
+                cbPStatus.Style = null;
+            }
+            else
+            {
+                txtName.Style = (Style)FindResource("TxtBoxStyle2");
+                cbSex.Style = (Style)FindResource("cmbStyle");
+                txtAge.Style = (Style)FindResource("TxtBoxStyle2");
+                txtDob.Style = (Style)FindResource("TxtBoxStyle2");
+                txtHeight.Style = (Style)FindResource("TxtBoxStyle2");
+                txtWeight.Style = (Style)FindResource("TxtBoxStyle2");
+                cbBloodType.Style = (Style)FindResource("cmbStyle");
+                txtECName.Style = (Style)FindResource("TxtBoxStyle2");
+                txtECNum.Style = (Style)FindResource("TxtBoxStyle2");
+                cbPStatus.Style = (Style)FindResource("cmbStyle");
+            }
         }
 
         private string GetPID()
@@ -396,7 +444,7 @@ namespace _2Y_2324_FinalsProject
             return dateValue;
         }
 
-        private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
+        private void btnSavePatient_Click(object sender, RoutedEventArgs e)
         {
             // Validate numeric inputs
             int height = GetNum(txtHeight);
@@ -409,8 +457,130 @@ namespace _2Y_2324_FinalsProject
                 return;
             }
 
+            Patient existing = _dbConn.Patients.FirstOrDefault(p => p.Patient_Id == currPID);
+            existing.Patient_Name = txtName.Text;
+            existing.Patient_Height = height;
+            existing.Patient_Weight = weight;
+            existing.Patient_Age = age;
+            existing.Patient_EmergencyContactName = txtECName.Text;
+            existing.Patient_EmergencyContactNum = txtECNum.Text;
+
+            DateTime? birthDate = GetDateTime(txtDob);
+            if (birthDate != null)
+            {
+                existing.Patient_Birth = birthDate.Value;
+            }
+            else
+            {
+                MessageBox.Show("wrong");
+                return;
+            }
+
+            switch (cbSex.SelectedIndex)
+            {
+                case 0:
+                    existing.Patient_Sex = "Male";
+                    break;
+                case 1:
+                    existing.Patient_Sex = "Female";
+                    break;
+                default:
+                    existing.Patient_Sex = "";
+                    break;
+            }
+
+            switch (cbBloodType.SelectedIndex)
+            {
+                case 0:
+                    existing.BloodType_Id = "BT01";
+                    break;
+                case 1:
+                    existing.BloodType_Id = "BT02";
+                    break;
+                case 2:
+                    existing.BloodType_Id = "BT03";
+                    break;
+                case 3:
+                    existing.BloodType_Id = "BT04";
+                    break;
+                case 4:
+                    existing.BloodType_Id = "BT05";
+                    break;
+                case 5:
+                    existing.BloodType_Id = "BT06";
+                    break;
+                case 6:
+                    existing.BloodType_Id = "BT07";
+                    break;
+                default:
+                    existing.BloodType_Id = "";
+                    break;
+            }
+
+            switch (cbPStatus.SelectedIndex)
+            {
+                case 0:
+                    existing.PatientStatus_Id = "DS01";
+                    break;
+                case 1:
+                    existing.PatientStatus_Id = "DS02";
+                    break;
+                case 2:
+                    existing.PatientStatus_Id = "DS03";
+                    break;
+                case 3:
+                    existing.PatientStatus_Id = "DS04";
+                    break;
+                default:
+                    existing.PatientStatus_Id = "";
+                    break;
+            }
+
+            Uri defaultImageUri = new Uri(picPath + "Default.png");
+
+            // Load the default image
+            BitmapImage temp = new BitmapImage(defaultImageUri);
+
+            // Check if imgPatient.Source is the same as the default image
+            if (imgPatient.Source != null && imgPatient.Source is BitmapImage currentImage)
+            {
+                if (currentImage.UriSource == defaultImageUri)
+                {
+                    existing.Patient_Image = "Default.png";
+                }
+                else
+                {
+                    existing.Patient_Image = fileName;
+                }
+            }
+
+            MessageBox.Show("Succesfully edited patient information");
+            _dbConn.SubmitChanges();
+
+            SwapStylePatient();
+            btnCancelEdit.Visibility = Visibility.Collapsed;
+            btnTakeImg.Visibility = Visibility.Collapsed;
+            btnUploadPic.Visibility = Visibility.Collapsed;
+            btnEdit.Visibility = Visibility.Visible;
+            btnSavePatient.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            // Validate numeric inputs
+            int height = GetNum(txtHeight);
+            int weight = GetNum(txtWeight);
+            int age = GetNum(txtAge);
+            string newID = GeneratePID(GetPID());
+
+            if (height == -1 || weight == -1 || age == -1)
+            {
+                // Invalid input, exit the method
+                return;
+            }
+
             Patient nPatient = new Patient();
-            nPatient.Patient_Id = "P07";
+            nPatient.Patient_Id = newID;
             nPatient.Patient_Name = txtName.Text;
             nPatient.Patient_Height = height;
             nPatient.Patient_Weight = weight;
@@ -509,11 +679,48 @@ namespace _2Y_2324_FinalsProject
             }
 
             _dbConn.Patients.InsertOnSubmit(nPatient);
+            NewHealthInfo(newID);
             // Add if statement to handle not null fields if necessary
             _dbConn.SubmitChanges();
             MessageBox.Show("Successfully added patient!");
+            btnTakeImg.Visibility = Visibility.Collapsed;
+            btnUploadPic.Visibility = Visibility.Collapsed;
+            btnAddNew.Visibility = Visibility.Collapsed;
+            SwapStylePatient();
+            Back2PList();
             ClearTBCB();
+        }
 
+        private string GetHID()
+        {
+            var highestPet = _dbConn.HealthInfos.OrderByDescending(p => p.HealthInfo_Id).FirstOrDefault();
+            if (highestPet != null)
+            {
+                return highestPet.HealthInfo_Id;
+            }
+
+            else
+            {
+                return "HI00";
+            }
+        }
+
+        private string GenerateHID(string highestID)
+        {
+            int num = int.Parse(highestID.Substring(2));
+            num++;
+            return "HI" + num.ToString("D2");
+        }
+
+        private void NewHealthInfo(string id)
+        {
+            HealthInfo nInfo = new HealthInfo();
+            nInfo.HealthInfo_Id = GenerateHID(GetHID());
+            nInfo.Patient_Id = id;
+            nInfo.HealthInfo_Medications = "";
+            nInfo.HealthInfo_Allergies = "";
+            nInfo.HealthInfo_FamilyHistory = "";
+            _dbConn.HealthInfos.InsertOnSubmit(nInfo);
         }
 
         private int GetNum(TextBox txtbox)
@@ -553,12 +760,20 @@ namespace _2Y_2324_FinalsProject
 
         private void btnBack2PList_Click(object sender, RoutedEventArgs e)
         {
+            Back2PList();
+        }
+
+        private void Back2PList()
+        {
             pnlPatient.Visibility = Visibility.Visible;
             pnlPatientInfo.Visibility = Visibility.Collapsed;
             pnlHeader.Visibility = Visibility.Collapsed;
             btnBack2PList.Visibility = Visibility.Collapsed;
+            btnAddNew.Visibility = Visibility.Collapsed;
             txtHeader.Text = null;
             currPID = null;
+            lvPatients.Items.Clear();
+            GetPatients();
         }
 
         private void GetVitals()
@@ -572,7 +787,7 @@ namespace _2Y_2324_FinalsProject
             {
                 foreach (Vital s in selectResults)
                 {
-                    lvVitals.Items.Add(new { Column1 = s.Vitals_Id, Column2 = s.Checkup_Date, Column3 = GetStaffName(s.Staff_Id) });
+                    lvVitals.Items.Add(new { Column1 = s.Vitals_Id, Column2 = s.Checkup_Date.Value.ToString("MM-dd-yyyy"), Column3 = GetStaffName(s.Staff_Id) });
                 }
             }
         }
@@ -610,6 +825,17 @@ namespace _2Y_2324_FinalsProject
             pnlHeader.Visibility = Visibility.Visible;
             btnBack2PList.Visibility = Visibility.Visible;
             txtHeader.Text = "Patient Information";
+            ClearTBCD2(); //Para sure
+            lvVitals.Items.Clear();
+        }
+
+        private void ClearTBCD2()
+        {
+            txtName2.Text = "";
+            txtMed.Text = "";
+            txtAlrgy.Text = "";
+            txtSurg.Text = "";
+            txtFamHist.Text = "";
         }
 
         private void btnEditHealth_Click(object sender, RoutedEventArgs e)
@@ -666,16 +892,31 @@ namespace _2Y_2324_FinalsProject
             btnBack2HInfo.Visibility = Visibility.Visible;
             btnAddVitals.Visibility = Visibility.Visible;
             txtHeader.Text = "Vitals Information";
-            txtDname.Text = GetStaffName(currPID);
-            SwapStyleVital();
+            txtDname.Text = GetStaffName(loggedIn);
+            txtName3.Text = GetPatientName(currPID);
+            ClearTBCB3();
+            txtDate.Text = DateTime.Now.ToString("MM-dd-yyyy");
+            txtTemp.Style = null;
+            txtPulse.Style = null;
+            txtRespi.Style = null;
+            txtsys.Style = null;
+            txtdia.Style = null;
+        }
+
+        private void ClearTBCB3()
+        {
+            txtDate.Text = "";
+            txtTemp.Text = "";
+            txtPulse.Text = "";
+            txtRespi.Text = "";
+            txtsys.Text = "";
+            txtdia.Text = "";
         }
 
         private void SwapStyleVital()
         {
-            if (txtName3.Style == null)
+            if (txtTemp.Style == null)
             {
-                txtName3.Style = (Style)FindResource("TxtBoxStyle2");
-                txtDate.Style = (Style)FindResource("TxtBoxStyle2");
                 txtTemp.Style = (Style)FindResource("TxtBoxStyle2");
                 txtPulse.Style = (Style)FindResource("TxtBoxStyle2");
                 txtRespi.Style = (Style)FindResource("TxtBoxStyle2");
@@ -684,8 +925,6 @@ namespace _2Y_2324_FinalsProject
             }
             else
             {
-                txtName3.Style = null;
-                txtDate.Style = null;
                 txtTemp.Style = null;
                 txtPulse.Style = null;
                 txtRespi.Style = null;
@@ -726,7 +965,6 @@ namespace _2Y_2324_FinalsProject
             }
 
             Vital existing = _dbConn.Vitals.FirstOrDefault(p => p.Vitals_Id == currVID);
-            //existing.Checkup_Date = DateTime.Now;
             existing.Patient_Temp = temp;
             existing.Patient_PulseRate = pulse;
             existing.Patient_Respiration = respi;
@@ -735,6 +973,9 @@ namespace _2Y_2324_FinalsProject
 
             MessageBox.Show("Succesfully saved vitals information");
             _dbConn.SubmitChanges();
+            btnSaveVitals.Visibility = Visibility.Collapsed;
+            btnCancelEditVital.Visibility = Visibility.Collapsed;
+            SwapStyleVital();
         }
 
         private string GetVID()
@@ -777,13 +1018,21 @@ namespace _2Y_2324_FinalsProject
             Vital nVital = new Vital();
             nVital.Vitals_Id = GenerateVID(GetVID());
             nVital.Patient_Id = currPID;
-            nVital.Checkup_Date = DateTime.Now;
+            nVital.Checkup_Date = DateTime.Now.Date;
             nVital.Patient_Temp = temp;
             nVital.Patient_PulseRate = pulse;
             nVital.Patient_Respiration = respi;
             nVital.Patient_Systolic = sys;
             nVital.Patient_Diastolic = dia;
             nVital.Staff_Id = loggedIn;
+
+            _dbConn.Vitals.InsertOnSubmit(nVital);
+            _dbConn.SubmitChanges();
+            MessageBox.Show("Successfully added vitals!");
+            btnAddVitals.Visibility = Visibility.Collapsed;
+            SwapStyleVital();
+            Back2HInfo();
+            ClearTBCB3();
         }
 
         private void lvVitals_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -806,21 +1055,36 @@ namespace _2Y_2324_FinalsProject
                                                   where s.Vitals_Id == currVID
                                                   select s;
 
+
+
                 foreach (Vital v in selectResults)
                 {
                     txtDname.Text = GetStaffName(v.Staff_Id);
                     txtName3.Text = GetPatientName(v.Patient_Id);
-                    txtDate.Text = v.Checkup_Date.ToString();
                     txtTemp.Text = v.Patient_Temp.ToString();
                     txtPulse.Text = v.Patient_PulseRate.ToString();
                     txtRespi.Text = v.Patient_Respiration.ToString();
                     txtsys.Text = v.Patient_Systolic.ToString();
                     txtdia.Text = v.Patient_Diastolic.ToString();
+
+                    if (v.Checkup_Date.HasValue)
+                    {
+                        txtDate.Text = v.Checkup_Date.Value.ToString("MM-dd-yyyy");
+                    }
+                    else
+                    {
+                        txtDate.Text = "N/A";
+                    }
                 }
             }
         }
 
         private void btnBack2HInfo_Click(object sender, RoutedEventArgs e)
+        {
+            Back2HInfo();
+        }
+
+        private void Back2HInfo()
         {
             pnlHealthInfo.Visibility = Visibility.Visible;
             btnBack2PInfo.Visibility = Visibility.Visible;
@@ -836,6 +1100,8 @@ namespace _2Y_2324_FinalsProject
             txtRespi.Style = (Style)FindResource("TxtBoxStyle2");
             txtsys.Style = (Style)FindResource("TxtBoxStyle2");
             txtdia.Style = (Style)FindResource("TxtBoxStyle2");
+            lvVitals.Items.Clear();
+            GetVitals();
         }
 
         private void btnStaff_Click(object sender, RoutedEventArgs e)
@@ -911,7 +1177,15 @@ namespace _2Y_2324_FinalsProject
 
                 foreach (Staff s in selectResults)
                 {
-                    imgStaff.Source = new BitmapImage(new Uri(picPath + s.Staff_Image));
+                    if (imgStaff.Source != null)
+                    {
+                        imgStaff.Source = new BitmapImage(new Uri(picPath + s.Staff_Image));
+                    }
+                    else
+                    {
+                        s.Staff_Image = "Default.png";
+                        imgPatient.Source = new BitmapImage(new Uri(picPath + s.Staff_Image));
+                    }
 
                     txtNameS.Text = s.Staff_Name;
                     txtPassS.Text = s.Staff_Password;
@@ -951,20 +1225,224 @@ namespace _2Y_2324_FinalsProject
             pnlHeader.Visibility = Visibility.Collapsed;
             txtHeader.Text = null;
             pnlStaff.Visibility = Visibility.Visible;
+            GetStaffs();
         }
 
-        private void btnAddS_Click(object sender, RoutedEventArgs e)
+        private void btnUploadPicS_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Browse Photos...";
+            ofd.DefaultExt = "png";
+            ofd.Filter = "Images (.JPG,*.PNG)|*.JPG;*.PNG|" +
+                "All files (*.*)|*.*";
 
+            ofd.ShowDialog();
+
+            if (ofd.FileName.Length > 0)
+            {
+                fileName = System.IO.Path.GetFileName(ofd.FileName); // Fully qualify Path
+                imgStaff.Source = new BitmapImage(new Uri(ofd.FileName, UriKind.Absolute));
+            }
         }
 
-        private void btnEdit1_Click(object sender, RoutedEventArgs e)
+        private void btnNewStaff_Click(object sender, RoutedEventArgs e)
         {
-            btnEdit1.Visibility = Visibility.Collapsed;
-            btnTakeImg1.Visibility = Visibility.Visible;
-            btnUploadPic1.Visibility = Visibility.Visible;
-            btnCancelEdit1.Visibility = Visibility.Visible;
-            btnSaveChanges1.Visibility = Visibility.Visible;
+            pnlStaff.Visibility = Visibility.Collapsed;
+            pnlStaffInfo.Visibility = Visibility.Visible;
+            btnSaveStaff.Visibility = Visibility.Collapsed;
+            btnAddStaff.Visibility = Visibility.Visible;
+            btnEditS.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Visible;
+            btnBack2SList.Visibility = Visibility.Visible;
+            btnTakeImgS.Visibility = Visibility.Visible;
+            btnUploadPicS.Visibility = Visibility.Visible;
+            imgStaff.Source = new BitmapImage(new Uri(picPath + "Default.png"));
+            txtHeader.Text = "Staff Information";
+            txtNameS.Style = null;
+            txtPassS.Style = null;
+            cbRole.Style = null;
+            cbStatus.Style = null;
+            ClearTBCB4();
+        }
+
+        private void ClearTBCB4()
+        {
+            txtNameS.Text = "";
+            txtPassS.Text = "";
+            cbRole.SelectedIndex = -1;
+            cbStatus.SelectedIndex = -1;
+        }
+
+        private string GetSID()
+        {
+            var highestPet = _dbConn.Staffs.OrderByDescending(p => p.Staff_Id).FirstOrDefault();
+            if (highestPet != null)
+            {
+                return highestPet.Staff_Id;
+            }
+
+            else
+            {
+                return "S00";
+            }
+        }
+
+        private string GenerateSID(string highestID)
+        {
+            int num = int.Parse(highestID.Substring(1));
+            num++;
+            return "S" + num.ToString("D2");
+        }
+
+        private void btnSaveStaff_Click(object sender, RoutedEventArgs e)
+        {
+            Staff existing = _dbConn.Staffs.FirstOrDefault(p => p.Staff_Id == currSID);
+            existing.Staff_Name = txtNameS.Text;
+            existing.Staff_Password = txtPassS.Text;
+            existing.StaffRole_Id = "ads";
+
+            switch (cbRole.SelectedIndex)
+            {
+                case 0:
+                    existing.StaffRole_Id = "SR01";
+                    break;
+                case 1:
+                    existing.StaffRole_Id = "SR02";
+                    break;
+                case 2:
+                    existing.StaffRole_Id = "SR03";
+                    break;
+                default:
+                    existing.StaffRole_Id = "";
+                    break;
+            }
+
+            switch (cbStatus.SelectedIndex)
+            {
+                case 0:
+                    existing.StaffStatus_Id = "SS01";
+                    break;
+                case 1:
+                    existing.StaffStatus_Id = "SS02";
+                    break;
+                case 2:
+                    existing.StaffStatus_Id = "SS03";
+                    break;
+                default:
+                    existing.StaffStatus_Id = "";
+                    break;
+            }
+
+            Uri defaultImageUri = new Uri(picPath + "Default.png");
+
+            // Load the default image
+            BitmapImage temp = new BitmapImage(defaultImageUri);
+
+            // Check if imgPatient.Source is the same as the default image
+            if (imgStaff.Source != null && imgStaff.Source is BitmapImage currentImage)
+            {
+                if (currentImage.UriSource == defaultImageUri)
+                {
+                    existing.Staff_Image = "Default.png";
+                }
+                else
+                {
+                    existing.Staff_Image = fileName;
+                }
+            }
+
+            MessageBox.Show("Succesfully edited staff information!");
+            _dbConn.SubmitChanges();
+
+            btnSaveStaff.Visibility = Visibility.Collapsed;
+            btnTakeImgS.Visibility = Visibility.Collapsed;
+            btnUploadPicS.Visibility = Visibility.Collapsed;
+            btnCancelEditS.Visibility = Visibility.Collapsed;
+            btnEditS.Visibility = Visibility.Visible;
+
+            txtNameS.Style = (Style)FindResource("TxtBoxStyle2");
+            txtPassS.Style = (Style)FindResource("TxtBoxStyle2");
+            cbRole.Style = (Style)FindResource("cmbStyle");
+            cbStatus.Style = (Style)FindResource("cmbStyle");
+        }
+
+        private void btnAddStaff_Click(object sender, RoutedEventArgs e)
+        {
+            Staff nStaff = new Staff();
+            nStaff.Staff_Id = GenerateSID(GetSID());
+            nStaff.Staff_Name = txtNameS.Text;
+            nStaff.Staff_Password = txtPassS.Text;
+
+            switch (cbRole.SelectedIndex)
+            {
+                case 0:
+                    nStaff.StaffRole_Id = "SR01";
+                    break;
+                case 1:
+                    nStaff.StaffRole_Id = "SR02";
+                    break;
+                case 2:
+                    nStaff.StaffRole_Id = "SR03";
+                    break;
+                default:
+                    nStaff.StaffRole_Id = "";
+                    break;
+            }
+
+            switch (cbStatus.SelectedIndex)
+            {
+                case 0:
+                    nStaff.StaffStatus_Id = "SS01";
+                    break;
+                case 1:
+                    nStaff.StaffStatus_Id = "SS02";
+                    break;
+                case 2:
+                    nStaff.StaffStatus_Id = "SS03";
+                    break;
+                default:
+                    nStaff.StaffStatus_Id = "";
+                    break;
+            }
+
+            Uri defaultImageUri = new Uri(picPath + "Default.png");
+
+            // Load the default image
+            BitmapImage temp = new BitmapImage(defaultImageUri);
+
+            // Check if imgPatient.Source is the same as the default image
+            if (imgStaff.Source != null && imgStaff.Source is BitmapImage currentImage)
+            {
+                if (currentImage.UriSource == defaultImageUri)
+                {
+                    nStaff.Staff_Image = "Default.png";
+                }
+                else
+                {
+                    nStaff.Staff_Image = fileName;
+                }
+            }
+
+            _dbConn.Staffs.InsertOnSubmit(nStaff);
+            // Add if statement to handle not null fields if necessary
+            _dbConn.SubmitChanges();
+            MessageBox.Show("Successfully added staff!");
+
+            pnlStaffInfo.Visibility = Visibility.Collapsed;
+            pnlHeader.Visibility = Visibility.Collapsed;
+            txtHeader.Text = null;
+            pnlStaff.Visibility = Visibility.Visible;
+            GetStaffs();
+            ClearTBCB4();
+        }
+
+        private void btnEditS_Click(object sender, RoutedEventArgs e)
+        {
+            btnEditS.Visibility = Visibility.Collapsed;
+            btnTakeImgS.Visibility = Visibility.Visible;
+            btnUploadPicS.Visibility = Visibility.Visible;
+            btnCancelEditS.Visibility = Visibility.Visible;
+            btnSaveStaff.Visibility = Visibility.Visible;
 
             txtNameS.Style = null;
             txtPassS.Style = null;
@@ -972,13 +1450,13 @@ namespace _2Y_2324_FinalsProject
             cbStatus.Style = null;
         }
 
-        private void btnCancelEdit1_Click(object sender, RoutedEventArgs e)
+        private void btnCancelEditS_Click(object sender, RoutedEventArgs e)
         {
-            btnCancelEdit1.Visibility = Visibility.Collapsed;
-            btnTakeImg1.Visibility = Visibility.Collapsed;
-            btnUploadPic1.Visibility = Visibility.Collapsed;
-            btnEdit1.Visibility = Visibility.Visible;
-            btnSaveChanges1.Visibility = Visibility.Collapsed;
+            btnCancelEditS.Visibility = Visibility.Collapsed;
+            btnTakeImgS.Visibility = Visibility.Collapsed;
+            btnUploadPicS.Visibility = Visibility.Collapsed;
+            btnEditS.Visibility = Visibility.Visible;
+            btnSaveStaff.Visibility = Visibility.Collapsed;
 
             txtNameS.Style = (Style)FindResource("TxtBoxStyle2");
             txtPassS.Style = (Style)FindResource("TxtBoxStyle2");
