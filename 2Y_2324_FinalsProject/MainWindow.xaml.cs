@@ -33,7 +33,7 @@ namespace _2Y_2324_FinalsProject
         string currPID = null;
         string currSID = null;
         string currVID = null;
-        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
+        string picPath = @"C:\Users\Julius Melgar\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
         string fileName = "";
 
         public MainWindow()
@@ -262,6 +262,7 @@ namespace _2Y_2324_FinalsProject
 
         private void lvPatients_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             if (lvPatients.SelectedItem != null)
             {
                 pnlPatient.Visibility = Visibility.Collapsed;
@@ -270,6 +271,8 @@ namespace _2Y_2324_FinalsProject
                 pnlPatientInfo.Visibility = Visibility.Visible;
                 pnlHeader.Visibility = Visibility.Visible;
                 btnBack2PList.Visibility = Visibility.Visible;
+                btnCancelEdit.Visibility = Visibility.Collapsed;
+                btnSavePatient.Visibility = Visibility.Collapsed;
                 txtHeader.Text = "Patient Information";
 
                 dynamic selectedItem = lvPatients.SelectedItem;
@@ -457,14 +460,19 @@ namespace _2Y_2324_FinalsProject
 
         private void btnSavePatient_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtName.Text))
+            {
+                MessageBox.Show("Patient name is required.");
+                return;
+            }
+
             // Validate numeric inputs
-            int height = GetNum(txtHeight);
-            int weight = GetNum(txtWeight);
-            int age = GetNum(txtAge);
+            int height = string.IsNullOrEmpty(txtHeight.Text) ? 0 : GetNum(txtHeight);
+            int weight = string.IsNullOrEmpty(txtWeight.Text) ? 0 : GetNum(txtWeight);
+            int age = string.IsNullOrEmpty(txtAge.Text) ? 0 : GetNum(txtAge);
 
             if (height == -1 || weight == -1 || age == -1)
             {
-                // Invalid input, exit the method
                 return;
             }
 
@@ -473,79 +481,101 @@ namespace _2Y_2324_FinalsProject
             existing.Patient_Height = height;
             existing.Patient_Weight = weight;
             existing.Patient_Age = age;
-            existing.Patient_EmergencyContactName = txtECName.Text;
-            existing.Patient_EmergencyContactNum = txtECNum.Text;
+            existing.Patient_EmergencyContactName = txtECName.Text ?? string.Empty;
+            existing.Patient_EmergencyContactNum = txtECNum.Text ?? string.Empty;
 
-            DateTime? birthDate = GetDateTime(txtDob);
-            if (birthDate != null)
+            if (txtDob.Text.ToUpper() == "N/A")
             {
-                existing.Patient_Birth = birthDate.Value;
+                existing.Patient_Birth = null; 
             }
             else
             {
-                MessageBox.Show("wrong");
-                return;
+                DateTime? birthDate = GetDateTime(txtDob);
+                if (birthDate != null)
+                {
+                    existing.Patient_Birth = birthDate.Value;
+                }
+                else
+                {
+                    return;
+                }
             }
 
-            switch (cbSex.SelectedIndex)
+            if (cbSex.SelectedIndex != -1)
             {
-                case 0:
-                    existing.Patient_Sex = "Male";
-                    break;
-                case 1:
-                    existing.Patient_Sex = "Female";
-                    break;
-                default:
-                    existing.Patient_Sex = "";
-                    break;
+                switch (cbSex.SelectedIndex)
+                {
+                    case 0:
+                        existing.Patient_Sex = "Male";
+                        break;
+                    case 1:
+                        existing.Patient_Sex = "Female";
+                        break;
+                    default:
+                        existing.Patient_Sex = "";
+                        break;
+                }
             }
+            else
+                existing.Patient_Sex = null;
 
-            switch (cbBloodType.SelectedIndex)
+            if (cbBloodType.SelectedIndex != -1)
             {
-                case 0:
-                    existing.BloodType_Id = "BT01";
-                    break;
-                case 1:
-                    existing.BloodType_Id = "BT02";
-                    break;
-                case 2:
-                    existing.BloodType_Id = "BT03";
-                    break;
-                case 3:
-                    existing.BloodType_Id = "BT04";
-                    break;
-                case 4:
-                    existing.BloodType_Id = "BT05";
-                    break;
-                case 5:
-                    existing.BloodType_Id = "BT06";
-                    break;
-                case 6:
-                    existing.BloodType_Id = "BT07";
-                    break;
-                default:
-                    existing.BloodType_Id = "";
-                    break;
+                switch (cbBloodType.SelectedIndex)
+                {
+                    case 0:
+                        existing.BloodType_Id = "BT01";
+                        break;
+                    case 1:
+                        existing.BloodType_Id = "BT02";
+                        break;
+                    case 2:
+                        existing.BloodType_Id = "BT03";
+                        break;
+                    case 3:
+                        existing.BloodType_Id = "BT04";
+                        break;
+                    case 4:
+                        existing.BloodType_Id = "BT05";
+                        break;
+                    case 5:
+                        existing.BloodType_Id = "BT06";
+                        break;
+                    case 6:
+                        existing.BloodType_Id = "BT07";
+                        break;
+                    default:
+                        existing.BloodType_Id = "";
+                        break;
+                }
             }
+            else
+                existing.BloodType_Id = null;
 
-            switch (cbPStatus.SelectedIndex)
+
+            if (cbPStatus.SelectedIndex != -1)
             {
-                case 0:
-                    existing.PatientStatus_Id = "DS01";
-                    break;
-                case 1:
-                    existing.PatientStatus_Id = "DS02";
-                    break;
-                case 2:
-                    existing.PatientStatus_Id = "DS03";
-                    break;
-                case 3:
-                    existing.PatientStatus_Id = "DS04";
-                    break;
-                default:
-                    existing.PatientStatus_Id = "";
-                    break;
+                switch (cbPStatus.SelectedIndex)
+                {
+                    case 0:
+                        existing.PatientStatus_Id = "DS01";
+                        break;
+                    case 1:
+                        existing.PatientStatus_Id = "DS02";
+                        break;
+                    case 2:
+                        existing.PatientStatus_Id = "DS03";
+                        break;
+                    case 3:
+                        existing.PatientStatus_Id = "DS04";
+                        break;
+                    default:
+                        existing.PatientStatus_Id = "";
+                        break;
+                }
             }
+            else
+                existing.PatientStatus_Id = null;
 
             Uri defaultImageUri = new Uri(picPath + "Default.png");
 
@@ -575,20 +605,19 @@ namespace _2Y_2324_FinalsProject
             btnEdit.Visibility = Visibility.Visible;
             btnSavePatient.Visibility = Visibility.Collapsed;
         }
-
+            
         private void btnAddNew_Click(object sender, RoutedEventArgs e)
         {
-            // Validate numeric inputs
-            int height = GetNum(txtHeight);
-            int weight = GetNum(txtWeight);
-            int age = GetNum(txtAge);
-            string newID = GeneratePID(GetPID());
-
-            if (height == -1 || weight == -1 || age == -1)
+            if (string.IsNullOrEmpty(txtName.Text))
             {
-                // Invalid input, exit the method
+                MessageBox.Show("Patient name is required.");
                 return;
             }
+
+            int height = string.IsNullOrEmpty(txtHeight.Text) ? 0 : GetNum(txtHeight);
+            int weight = string.IsNullOrEmpty(txtWeight.Text) ? 0 : GetNum(txtWeight);
+            int age = string.IsNullOrEmpty(txtAge.Text) ? 0 : GetNum(txtAge);
+            string newID = GeneratePID(GetPID());
 
             Patient nPatient = new Patient();
             nPatient.Patient_Id = newID;
@@ -596,8 +625,8 @@ namespace _2Y_2324_FinalsProject
             nPatient.Patient_Height = height;
             nPatient.Patient_Weight = weight;
             nPatient.Patient_Age = age;
-            nPatient.Patient_EmergencyContactName = txtECName.Text;
-            nPatient.Patient_EmergencyContactNum = txtECNum.Text;
+            nPatient.Patient_EmergencyContactName = txtECName.Text ?? string.Empty;
+            nPatient.Patient_EmergencyContactNum = txtECNum.Text ?? string.Empty;
             nPatient.Staff_Id = loggedIn;
 
             DateTime? birthDate = GetDateTime(txtDob);
@@ -605,71 +634,84 @@ namespace _2Y_2324_FinalsProject
             {
                 nPatient.Patient_Birth = birthDate.Value;
             }
+
+
+            if (cbSex.SelectedIndex != -1)
+            {
+                switch (cbSex.SelectedIndex)
+                {
+                    case 0:
+                        nPatient.Patient_Sex = "Male";
+                        break;
+                    case 1:
+                        nPatient.Patient_Sex = "Female";
+                        break;
+                    default:
+                        nPatient.Patient_Sex = "";
+                        break;
+                }
+            }
             else
-            {
-                MessageBox.Show("wrong");
-                return;
-            }
+                nPatient.Patient_Sex = null;
 
-            switch (cbSex.SelectedIndex)
+            if (cbBloodType.SelectedIndex != -1) 
             {
-                case 0:
-                    nPatient.Patient_Sex = "Male";
-                    break;
-                case 1:
-                    nPatient.Patient_Sex = "Female";
-                    break;
-                default:
-                    nPatient.Patient_Sex = "";
-                    break;
+                switch (cbBloodType.SelectedIndex)
+                {
+                    case 0:
+                        nPatient.BloodType_Id = "BT01";
+                        break;
+                    case 1:
+                        nPatient.BloodType_Id = "BT02";
+                        break;
+                    case 2:
+                        nPatient.BloodType_Id = "BT03";
+                        break;
+                    case 3:
+                        nPatient.BloodType_Id = "BT04";
+                        break;
+                    case 4:
+                        nPatient.BloodType_Id = "BT05";
+                        break;
+                    case 5:
+                        nPatient.BloodType_Id = "BT06";
+                        break;
+                    case 6:
+                        nPatient.BloodType_Id = "BT07";
+                        break;
+                    default:
+                        nPatient.BloodType_Id = "";
+                        break;
+                }
             }
+            else
+                nPatient.BloodType_Id = null;
 
-            switch (cbBloodType.SelectedIndex)
-            {
-                case 0:
-                    nPatient.BloodType_Id = "BT01";
-                    break;
-                case 1:
-                    nPatient.BloodType_Id = "BT02";
-                    break;
-                case 2:
-                    nPatient.BloodType_Id = "BT03";
-                    break;
-                case 3:
-                    nPatient.BloodType_Id = "BT04";
-                    break;
-                case 4:
-                    nPatient.BloodType_Id = "BT05";
-                    break;
-                case 5:
-                    nPatient.BloodType_Id = "BT06";
-                    break;
-                case 6:
-                    nPatient.BloodType_Id = "BT07";
-                    break;
-                default:
-                    nPatient.BloodType_Id = "";
-                    break;
-            }
 
-            switch (cbPStatus.SelectedIndex)
+            if (cbPStatus.SelectedIndex != -1)
             {
-                case 0:
-                    nPatient.PatientStatus_Id = "DS01";
-                    break;
-                case 1:
-                    nPatient.PatientStatus_Id = "DS02";
-                    break;
-                case 2:
-                    nPatient.PatientStatus_Id = "DS03";
-                    break;
-                case 3:
-                    nPatient.PatientStatus_Id = "DS04";
-                    break;
-                default:
-                    nPatient.PatientStatus_Id = "";
-                    break;
+                switch (cbPStatus.SelectedIndex)
+                {
+                    case 0:
+                        nPatient.PatientStatus_Id = "DS01";
+                        break;
+                    case 1:
+                        nPatient.PatientStatus_Id = "DS02";
+                        break;
+                    case 2:
+                        nPatient.PatientStatus_Id = "DS03";
+                        break;
+                    case 3:
+                        nPatient.PatientStatus_Id = "DS04";
+                        break;
+                    default:
+                        nPatient.PatientStatus_Id = "";
+                        break;
+                }
             }
+            else
+                nPatient.PatientStatus_Id = null;
+
 
             Uri defaultImageUri = new Uri(picPath + "Default.png");
 
@@ -817,6 +859,8 @@ namespace _2Y_2324_FinalsProject
 
         private void btnHealthInfo_Click(object sender, RoutedEventArgs e)
         {
+            SwapStyleHealth();
+
             btnBack2PList.Visibility = Visibility.Collapsed;
             pnlPatientInfo.Visibility = Visibility.Collapsed;
 
@@ -848,6 +892,7 @@ namespace _2Y_2324_FinalsProject
             pnlHeader.Visibility = Visibility.Visible;
             btnBack2PList.Visibility = Visibility.Visible;
             txtHeader.Text = "Patient Information";
+
             ClearTBCD2(); //Para sure
             lvVitals.Items.Clear();
         }
@@ -907,6 +952,9 @@ namespace _2Y_2324_FinalsProject
 
         private void btnNewVitals_Click(object sender, RoutedEventArgs e)
         {
+            btnSaveVitals.Visibility = Visibility.Collapsed;
+            btnEditVital.Visibility = Visibility.Collapsed;
+            btnCancelEditVital.Visibility = Visibility.Collapsed;
             pnlHealthInfo.Visibility = Visibility.Collapsed;
             btnBack2PInfo.Visibility = Visibility.Collapsed;
             btnEditVital.Visibility = Visibility.Collapsed;
@@ -1060,6 +1108,7 @@ namespace _2Y_2324_FinalsProject
 
         private void lvVitals_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            btnSaveVitals.Visibility = Visibility.Collapsed;
             currVID = null;
             if (lvVitals.SelectedItem != null)
             {
@@ -1104,6 +1153,7 @@ namespace _2Y_2324_FinalsProject
 
         private void btnBack2HInfo_Click(object sender, RoutedEventArgs e)
         {
+            SwapStyleHealth();
             Back2HInfo();
         }
 
@@ -1407,37 +1457,48 @@ namespace _2Y_2324_FinalsProject
             nStaff.Staff_Name = txtNameS.Text;
             nStaff.Staff_Password = txtPassS.Text;
 
-            switch (cbRole.SelectedIndex)
+            if (cbRole.SelectedIndex == -1)
             {
-                case 0:
-                    nStaff.StaffRole_Id = "SR01";
-                    break;
-                case 1:
-                    nStaff.StaffRole_Id = "SR02";
-                    break;
-                case 2:
-                    nStaff.StaffRole_Id = "SR03";
-                    break;
-                default:
-                    nStaff.StaffRole_Id = "";
-                    break;
+                switch (cbRole.SelectedIndex)
+                {
+                    case 0:
+                        nStaff.StaffRole_Id = "SR01";
+                        break;
+                    case 1:
+                        nStaff.StaffRole_Id = "SR02";
+                        break;
+                    case 2:
+                        nStaff.StaffRole_Id = "SR03";
+                        break;
+                    default:
+                        nStaff.StaffRole_Id = "";
+                        break;
+                }
             }
+            else
+                nStaff.StaffRole_Id = null;
 
-            switch (cbStatus.SelectedIndex)
+
+            if (cbPStatus.SelectedIndex == -1)
             {
-                case 0:
-                    nStaff.StaffStatus_Id = "SS01";
-                    break;
-                case 1:
-                    nStaff.StaffStatus_Id = "SS02";
-                    break;
-                case 2:
-                    nStaff.StaffStatus_Id = "SS03";
-                    break;
-                default:
-                    nStaff.StaffStatus_Id = "";
-                    break;
+                switch (cbStatus.SelectedIndex)
+                {
+                    case 0:
+                        nStaff.StaffStatus_Id = "SS01";
+                        break;
+                    case 1:
+                        nStaff.StaffStatus_Id = "SS02";
+                        break;
+                    case 2:
+                        nStaff.StaffStatus_Id = "SS03";
+                        break;
+                    default:
+                        nStaff.StaffStatus_Id = "";
+                        break;
+                }
             }
+            else
+                nStaff.StaffStatus_Id = null;
 
             Uri defaultImageUri = new Uri(picPath + "Default.png");
 
