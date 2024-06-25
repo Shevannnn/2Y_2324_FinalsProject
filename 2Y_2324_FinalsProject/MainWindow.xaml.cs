@@ -33,7 +33,7 @@ namespace _2Y_2324_FinalsProject
         string currPID = null;
         string currSID = null;
         string currVID = null;
-        string picPath = @"C:\Users\Julius Melgar\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
+        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
         string fileName = "";
 
         public MainWindow()
@@ -76,6 +76,8 @@ namespace _2Y_2324_FinalsProject
                             }
 
                             txtLogin.Text = s.Staff_Name;
+                            txtLogin2.Text = s.Staff_Name;
+                            txtLogin3.Text = s.Staff_Name;
                         }
                         else
                             MessageBox.Show("Incorrect Password...");
@@ -687,9 +689,9 @@ namespace _2Y_2324_FinalsProject
                 }
             }
 
+            // Add if statement to handle not null fields if necessary
             _dbConn.Patients.InsertOnSubmit(nPatient);
             NewHealthInfo(newID);
-            // Add if statement to handle not null fields if necessary
             _dbConn.SubmitChanges();
             MessageBox.Show("Successfully added patient!");
             btnTakeImg.Visibility = Visibility.Collapsed;

@@ -294,7 +294,7 @@
                 <StackPanel  Orientation="Horizontal">
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
                     <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
-                    <TextBlock Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
+                    <TextBlock x:Name="txtLogin2" Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
                     <Button x:Name="btnBack2Main" Visibility="Visible" Margin="290 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2Main_Click"/>
                     <Button x:Name="btnAddPatient" Visibility="Visible" Margin="-120 0 0 0" FontSize="12" Content="Add Patient" Style="{StaticResource btnStyle4}" Click="btnAddPatient_Click"/>
                 </StackPanel>
@@ -459,7 +459,7 @@
                 <StackPanel  Orientation="Horizontal">
                     <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Staff List" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
                     <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
-                    <TextBlock Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
+                    <TextBlock x:Name="txtLogin3" Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
                     <Button x:Name="btnBackS" Visibility="Visible" Margin="290 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2Main_Click"/>
                     <Button x:Name="btnNewStaff" Visibility="Visible" Margin="-120 0 0 0" FontSize="12" Content="Add Staff" Style="{StaticResource btnStyle6}" Click="btnNewStaff_Click"/>
                 </StackPanel>

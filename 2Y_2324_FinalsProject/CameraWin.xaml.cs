@@ -25,7 +25,7 @@ namespace _2Y_2324_FinalsProject
     {
         FilterInfoCollection fic = null;
         VideoCaptureDevice vcd = null;
-        string picPath = @"C:\Users\Julius Melgar\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures";
+        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
 
         public CameraWin()
         {
@@ -116,13 +116,29 @@ namespace _2Y_2324_FinalsProject
         {
             if (vcd.IsRunning)
             {
-                string filePath = picPath + "Test.png";
+                string filePath = picPath + GenerateFileName();
                 ImageToFile(filePath);
-                vcd.WaitForStop();
-                vcd = null;
-                vcd.Stop();
+                MessageBox.Show($"Image saved successfully as {GenerateFileName()}\nPlease proceed to upload image\n\nImage was saved on {picPath}{GenerateFileName()}");
+                this.Close();
             }
-            this.Close();
+            else
+            {
+                MessageBox.Show("Camera not running");
+            }
+        }
+
+        private string GenerateFileName()
+        {
+            // Get the current date and time
+            DateTime now = DateTime.Now;
+
+            // Format the date and time to a specific string pattern
+            string timestamp = now.ToString("yyyyMMdd_HHmmss");
+
+            // Combine the formatted date and time with a file extension
+            string filename = $"Image_{timestamp}.png";
+
+            return filename;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
