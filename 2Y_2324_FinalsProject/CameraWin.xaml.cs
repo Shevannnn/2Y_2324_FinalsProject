@@ -25,7 +25,7 @@ namespace _2Y_2324_FinalsProject
     {
         FilterInfoCollection fic = null;
         VideoCaptureDevice vcd = null;
-        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures";
+        string picPath = @"C:\Users\Julius Melgar\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures";
 
         public CameraWin()
         {

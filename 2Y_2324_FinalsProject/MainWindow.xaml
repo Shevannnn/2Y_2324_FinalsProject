@@ -137,6 +137,75 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="btnStyle4" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="/Images/addP.png" Stretch="UniformToFill">
+                                <Image.OpacityMask>
+                                    <ImageBrush ImageSource="/Images/addP.png" Stretch="Fill" TileMode="None" />
+                                </Image.OpacityMask>
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnStyle5" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="/Images/logout.png" Stretch="UniformToFill">
+                                <Image.OpacityMask>
+                                    <ImageBrush ImageSource="/Images/logout.png" Stretch="Fill" TileMode="None" />
+                                </Image.OpacityMask>
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="btnStyle6" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Image Source="/Images/addS.png" Stretch="UniformToFill">
+                                <Image.OpacityMask>
+                                    <ImageBrush ImageSource="/Images/addS.png" Stretch="Fill" TileMode="None" />
+                                </Image.OpacityMask>
+                            </Image>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="pbStyle" TargetType="PasswordBox">
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="30"/>
@@ -182,7 +251,7 @@
 
     <Grid Background="AliceBlue" >
         <StackPanel x:Name="pnlLogin" Margin="0" HorizontalAlignment="Center" Orientation="Vertical" Visibility="Visible">
-            <Image Source="/Images/logo.png" Margin="0 50 0 0" Width="200" Height="220"/>
+            <Image Source="/Images/logo.png" Margin="0 40 0 0" Width="200" Height="220"/>
             <TextBlock Text=" Username :" FontSize="15" Margin="10 -10 115 -5" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold" />
             <TextBox x:Name="txtUser" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontFamily="verdana" FontSize="13" Margin="0 5 0 0" Style="{StaticResource TxtBoxStyle}"/>
             <TextBlock Text=" Password :" FontSize="15" Margin="10 5 115 -10" Width="100" HorizontalAlignment="Center" FontFamily="verdana" FontWeight="Bold"/>
@@ -205,12 +274,12 @@
         </StackPanel>
 
         <StackPanel x:Name="pnlMain" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
-            <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
+            <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="0 0 0 2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
-                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Main Menu" TextAlignment="Center" FontSize="20"/>
-                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
-                    <TextBlock x:Name="txtLogin" Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
-                    <Button x:Name="btnLogout" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Logout" Style="{StaticResource BtnStyle}" Click="btnLogout_Click"/>
+                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Main Menu" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtLogin" Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
+                    <Button x:Name="btnLogout" Visibility="Visible" Margin="290 0 0 0" FontSize="12" Content="Logout" Style="{StaticResource btnStyle5}" Click="btnLogout_Click"/>
                 </StackPanel>
             </Border>
 
@@ -221,13 +290,13 @@
         </StackPanel>
 
         <StackPanel x:Name="pnlPatient" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
-            <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="2" CornerRadius="2" >
+            <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="0 0 0 2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
-                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20"/>
-                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
-                    <TextBlock Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
-                    <Button x:Name="btnAddPatient" Visibility="Visible" Margin="160 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Patient" Style="{StaticResource BtnStyle}" Click="btnAddPatient_Click"/>
-                    <Button x:Name="btnBack2Main" Visibility="Visible" Margin="10 0 0 0" FontSize="12" Width="70" Height="25" Background="Brown" Content="Back" Style="{StaticResource BtnStyle}" Click="btnBack2Main_Click"/>
+                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Patient List" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
+                    <Button x:Name="btnBack2Main" Visibility="Visible" Margin="290 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2Main_Click"/>
+                    <Button x:Name="btnAddPatient" Visibility="Visible" Margin="-120 0 0 0" FontSize="12" Content="Add Patient" Style="{StaticResource btnStyle4}" Click="btnAddPatient_Click"/>
                 </StackPanel>
             </Border>
 
@@ -251,10 +320,10 @@
             <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="0 0 0 2" CornerRadius="2" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="txtHeader" Margin="130 0 0 0" Width="500" Height="30" Text="Header" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
-                    <Button x:Name="btnBack2PList" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PList_Click" />
-                    <Button x:Name="btnBack2PInfo" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PInfo_Click" />
-                    <Button x:Name="btnBack2HInfo" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2HInfo_Click" />
-                    <Button x:Name="btnBack2SList" Visibility="Collapsed" Margin="60 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2SList_Click" />
+                    <Button x:Name="btnBack2PList" Visibility="Collapsed" Margin="80 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PList_Click" />
+                    <Button x:Name="btnBack2PInfo" Visibility="Collapsed" Margin="80 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2PInfo_Click" />
+                    <Button x:Name="btnBack2HInfo" Visibility="Collapsed" Margin="80 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2HInfo_Click" />
+                    <Button x:Name="btnBack2SList" Visibility="Collapsed" Margin="80 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2SList_Click" />
                 </StackPanel>
             </Border>
         </StackPanel>
@@ -388,11 +457,11 @@
         <StackPanel x:Name="pnlStaff" Margin="20 20 20 20" Orientation="Vertical" Visibility="Collapsed">
             <Border Margin="0 0 0 0" BorderBrush="Black" BorderThickness="0 0 0 2" CornerRadius="2" >
                 <StackPanel  Orientation="Horizontal">
-                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Staff List" TextAlignment="Center" FontSize="20"/>
-                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15"/>
-                    <TextBlock Margin="-600 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Center" FontSize="15"/>
-                    <Button x:Name="btnBackS" Visibility="Visible" Margin="250 0 0 0" FontSize="12" Width="70" Height="25" Background="OrangeRed" Content="Back" Style="{StaticResource BtnStyle}" Click="btnBack2Main_Click"/>
-                    <Button x:Name="btnNewStaff" Visibility="Visible" Margin="-240 0 0 0" FontSize="12" Width="70" Height="25" Background="Orange" Content="Add Staff" Style="{StaticResource BtnStyle}" Click="btnNewStaff_Click"/>
+                    <TextBlock Margin="310 0 0 0" Width="110" Height="30" Text="Staff List" TextAlignment="Center" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Margin="-750 0 0 0" Width="110" Height="25" Text="Logged In:" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock Margin="-550 0 0 0" Width="110" Height="25" Text="Name" TextAlignment="Left" FontSize="15"/>
+                    <Button x:Name="btnBackS" Visibility="Visible" Margin="290 0 0 0" FontSize="12" Content="Back" Style="{StaticResource btnStyle3}" Click="btnBack2Main_Click"/>
+                    <Button x:Name="btnNewStaff" Visibility="Visible" Margin="-120 0 0 0" FontSize="12" Content="Add Staff" Style="{StaticResource btnStyle6}" Click="btnNewStaff_Click"/>
                 </StackPanel>
             </Border>
             <StackPanel Orientation="Horizontal">
