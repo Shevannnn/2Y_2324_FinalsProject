@@ -1456,9 +1456,9 @@ namespace _2Y_2324_FinalsProject
                     nStaff.Staff_Image = fileName;
                 }
             }
+            // Add if statement to handle not null fields if necessary
 
             _dbConn.Staffs.InsertOnSubmit(nStaff);
-            // Add if statement to handle not null fields if necessary
             _dbConn.SubmitChanges();
             MessageBox.Show("Successfully added staff!");
 
