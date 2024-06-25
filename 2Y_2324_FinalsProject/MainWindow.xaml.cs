@@ -33,7 +33,7 @@ namespace _2Y_2324_FinalsProject
         string currPID = null;
         string currSID = null;
         string currVID = null;
-        string picPath = @"C:\Users\Evan\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
+        string picPath = @"C:\Users\Julius Melgar\source\repos\2Y_2324_FinalsProject\2Y_2324_FinalsProject\Images\Pictures\";
         string fileName = "";
 
         public MainWindow()
@@ -375,7 +375,16 @@ namespace _2Y_2324_FinalsProject
             btnBack2PList.Visibility = Visibility.Visible;
             txtHeader.Text = "Patient Information";
             imgPatient.Source = new BitmapImage(new Uri(picPath + "Default.png"));
-            SwapStylePatient();
+            txtName.Style = null;
+            cbSex.Style = null;
+            txtAge.Style = null;
+            txtDob.Style = null;
+            txtHeight.Style = null;
+            txtWeight.Style = null;
+            cbBloodType.Style = null;
+            txtECName.Style = null;
+            txtECNum.Style = null;
+            cbPStatus.Style = null;
             ClearTBCB();
         }
 
@@ -760,6 +769,18 @@ namespace _2Y_2324_FinalsProject
 
         private void btnBack2PList_Click(object sender, RoutedEventArgs e)
         {
+            txtName.Style = (Style)FindResource("TxtBoxStyle2");
+            cbSex.Style = (Style)FindResource("cmbStyle");
+            txtAge.Style = (Style)FindResource("TxtBoxStyle2");
+            txtDob.Style = (Style)FindResource("TxtBoxStyle2");
+            txtHeight.Style = (Style)FindResource("TxtBoxStyle2");
+            txtWeight.Style = (Style)FindResource("TxtBoxStyle2");
+            cbBloodType.Style = (Style)FindResource("cmbStyle");
+            txtECName.Style = (Style)FindResource("TxtBoxStyle2");
+            txtECNum.Style = (Style)FindResource("TxtBoxStyle2");
+            cbPStatus.Style = (Style)FindResource("cmbStyle");
+            btnTakeImg.Visibility = Visibility.Collapsed;
+            btnUploadPic.Visibility = Visibility.Collapsed;
             Back2PList();
         }
 
@@ -1160,6 +1181,9 @@ namespace _2Y_2324_FinalsProject
 
         private void lvStaff_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            btnAddStaff.Visibility = Visibility.Collapsed;
+            btnCancelEditS.Visibility = Visibility.Collapsed;
+            btnSaveStaff.Visibility = Visibility.Collapsed;
             if (lvStaff.SelectedItem != null)
             {
                 pnlStaff.Visibility = Visibility.Collapsed;
@@ -1224,6 +1248,13 @@ namespace _2Y_2324_FinalsProject
             pnlStaffInfo.Visibility = Visibility.Collapsed;
             pnlHeader.Visibility = Visibility.Collapsed;
             txtHeader.Text = null;
+            txtNameS.Style = (Style)FindResource("TxtBoxStyle2");
+            txtPassS.Style = (Style)FindResource("TxtBoxStyle2");
+            cbRole.Style = (Style)FindResource("cmbStyle");
+            cbStatus.Style = (Style)FindResource("cmbStyle");
+            btnTakeImgS.Visibility = Visibility.Collapsed;
+            btnUploadPicS.Visibility = Visibility.Collapsed;
+            btnEditS.Visibility = Visibility.Visible;
             pnlStaff.Visibility = Visibility.Visible;
             GetStaffs();
         }
@@ -1252,6 +1283,7 @@ namespace _2Y_2324_FinalsProject
             btnSaveStaff.Visibility = Visibility.Collapsed;
             btnAddStaff.Visibility = Visibility.Visible;
             btnEditS.Visibility = Visibility.Collapsed;
+            btnCancelEditS.Visibility = Visibility.Collapsed;
             pnlHeader.Visibility = Visibility.Visible;
             btnBack2SList.Visibility = Visibility.Visible;
             btnTakeImgS.Visibility = Visibility.Visible;
